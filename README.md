@@ -12,10 +12,9 @@ Miscellaneous scripts for Habitica
 ### Examples
 - To delete all unfinished todo's within a 30-day challenge:
 ```
-for id in $(curl -H "x-api-key: $KEY" -H "x-api-user: $USR" -H "Content-Type:application/json" \
-        https://habitica.com:443/api/v2/user/tasks | jq -r '.[] | \
-        select(.type == "todo") | select(.text | startswith("30-Day Ab/Squat Challenge")) | \
-        select(.completed == false) | .id' cur.json | sed 's/\\r//g'); do
+for id in $(curl -H "x-api-key: $KEY" -H "x-api-user: $USR" -H "Content-Type:application/json" https://habitica.com:443/api/v2/user/tasks | \
+        jq -r '.[] | select(.type == "todo") | select(.text | startswith("30-Day Ab/Squat Challenge")) | select(.completed == false) | .id' | \
+        sed 's/\\r//g'); do
     task-delete.sh $id
 done
 ```

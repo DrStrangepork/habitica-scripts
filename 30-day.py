@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 
-import json, requests, time
+import json, os, requests, time
 from operator import itemgetter
 
-USR="YOUR_USERID_HERE"
-KEY="YOUR_KEY_HERE"
+USR = os.getenv('HAB_API_USER', "YOUR_USERID_HERE")
+KEY = os.getenv('HAB_API_TOKEN', "YOUR_KEY_HERE")
 
 hab_url = "https://habitica.com/api/v2/user/tasks"
 headers = {"x-api-key":KEY,"x-api-user":USR,"Content-Type":"application/json"}
