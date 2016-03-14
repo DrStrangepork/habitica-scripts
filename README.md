@@ -19,3 +19,7 @@ for id in $(curl -H "x-api-key: $KEY" -H "x-api-user: $USR" -H "Content-Type:app
     task-delete.sh $id
 done
 ```
+
+### To-do
+1. Create authentication scheme similar to AWS CLI (for saving API keys)
+2. Add task up/down scripts
