@@ -6,7 +6,7 @@ from operator import itemgetter
 USR = os.getenv('HAB_API_USER', "YOUR_USERID_HERE")
 KEY = os.getenv('HAB_API_TOKEN', "YOUR_KEY_HERE")
 
-hab_url = "https://habitica.com/api/v2/user/tasks"
+hab_url = "https://habitica.com/api/v3/tasks/user"
 headers = {"x-api-key":KEY,"x-api-user":USR,"Content-Type":"application/json"}
 schedule = [
     {"day":"01","notes":"Crunches 10\nSit-ups 10\nSquats 25"},  {"day":"02","notes":"Crunches 15\nSit-ups 20\nSquats 30"},
