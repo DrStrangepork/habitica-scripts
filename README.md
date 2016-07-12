@@ -2,11 +2,14 @@
 Miscellaneous scripts for Habitica
 
 ### Contents
+- 30-day.py
     + A 30-day escalating ab/squat exercize routine that creates:
         * One daily task "30-Day Ab/Squat Challenge" to track your trend
         * One todo for each day of the Challenge
 - task-delete.sh
     + Simple curl API wrapper for deleting tasks
+- habitica-backup.py
+    + Backs up the JSON data export for offline storage
 
 ### Examples
 - To delete all unfinished todo's within a 30-day challenge:
