@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import json, os, requests, subprocess
+#import pdb; pdb.set_trace()
 
 USR = os.getenv('HAB_API_USER', "YOUR_USERID_HERE")
 KEY = os.getenv('HAB_API_TOKEN', "YOUR_KEY_HERE")
@@ -13,18 +14,15 @@ TDB = "location_of_backup_json_db"
 now = unicode(subprocess.Popen(["date", "-Iseconds"], stdout=subprocess.PIPE).communicate()[0].strip(), "utf-8")
 
 # MAIN
-#import pdb; pdb.set_trace()
 # Load DB
 with open(HDB, 'r') as f:
     DB = json.load(f)
 
 # Get profile
 req = requests.get(hab_url, headers=headers)
-# profile = req.json()
 
 # Add profile
 new = {}
-# new[now] = profile
 new[now] = req.json()
 DB.append(new)
 
