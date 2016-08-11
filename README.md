@@ -1,6 +1,9 @@
 # habitica-scripts
 Miscellaneous scripts for Habitica
 
+### Installation
+- Execute `pip install -r requirements.txt`
+
 ### Contents
 - 30-day.py
     + A 30-day escalating ab/squat exercize routine that creates:
