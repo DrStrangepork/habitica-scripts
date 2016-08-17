@@ -13,6 +13,8 @@ Miscellaneous scripts for Habitica
     + Simple curl API wrapper for deleting tasks
 - habitica-backup.py
     + Backs up the JSON data export for offline storage
+- push-todos-with-duedates-to-top.py
+    + Moves active tasks with duedates to the top of the To-Dos list (excluding todos with future due dates)
 
 ### Examples
 - To delete all unfinished todo's within a 30-day challenge:
