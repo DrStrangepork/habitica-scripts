@@ -29,10 +29,18 @@ req = requests.get(tagsurl, headers=headers)
 for tag in (x for x in req.json()['data'] if x['name'] == TAG):
     TAGID = tag['id']
 
+# Abort if there are no dailys with the TAG tag
 try:
     TAGID
 except NameError:
     print "Autoforward tag \"{}\" not found".format(TAG)
+    quit()
+
+# Abort if you are resting at the inn
+userurl = "https://habitica.com/api/v3/user"
+req = requests.get(userurl, headers=headers)
+if json.dumps(req.json()['data']['preferences']['sleep']):
+    print "Resting in the Inn, autoforwarding cancelled"
     quit()
 
 duedate = unicode(subprocess.Popen(["date", "-I", "--date=yesterday"], stdout=subprocess.PIPE).communicate()[0].strip(), "utf-8")
