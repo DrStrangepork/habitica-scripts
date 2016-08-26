@@ -15,6 +15,9 @@ Miscellaneous scripts for Habitica
     + Backs up the JSON data export for offline storage
 - push-todos-with-duedates-to-top.py
     + Moves active tasks with duedates to the top of the To-Dos list (excluding todos with future due dates)
+- autoforward-missed-dailys.py
+    + Based on a specific tag, if a daily is missed, it will be added to the current day's dailys
+    + For use with non-daily dailys, e.g. dailys that repeat every Monday
 
 ### Examples
 - To delete all unfinished todo's within a 30-day challenge:
