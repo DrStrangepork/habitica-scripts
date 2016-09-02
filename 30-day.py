@@ -2,6 +2,7 @@
 
 import json, os, requests, time
 from operator import itemgetter
+#import pdb; pdb.set_trace()
 
 USR = os.getenv('HAB_API_USER', "YOUR_USERID_HERE")
 KEY = os.getenv('HAB_API_TOKEN', "YOUR_KEY_HERE")
@@ -26,12 +27,12 @@ schedule = [
     {"day":"29","notes":"Crunches 90\nSit-ups 30\nSquats 95"},  {"day":"30","notes":"Crunches 40\nSit-ups 40\nSquats 100"}
 ]
 
-r = requests.post(hab_url, headers=headers, json={"attribute":"con","priority":1.5,
-                  "startDate":time.strftime("%Y-%m-%d", time.localtime()),"text":"30-Day Ab/Squat Challenge","type":"daily"})
-print json.dumps({k: v for k, v in r.json().items() if k in ['id','text','type']}, sort_keys=True)
+req = requests.post(hab_url, headers=headers, json={"attribute":"con","priority":1.5,
+                  "startDate":time.strftime("%Y-%m-%d"),"text":"30-Day Ab/Squat Challenge","type":"daily"})
+print json.dumps({k: v for k, v in req.json().items() if k in ['id','text','type']}, sort_keys=True)
 
 for elem in sorted(schedule, key=itemgetter('day'), reverse=True):
-    r = requests.post(hab_url, headers=headers, json={"attribute":"con",
+    req = requests.post(hab_url, headers=headers, json={"attribute":"con",
                       "date":time.strftime("%Y-%m-%d", time.localtime(time.time() + 24*3600*(int(elem['day'])-1))),
                       "notes":elem['notes'],"text":"30-Day Ab/Squat Challenge Day "+elem['day'],"type":"todo"})
-    print json.dumps({k: v for k, v in r.json().items() if k in ['date','id','text','type']}, sort_keys=True)
+    print json.dumps({k: v for k, v in req.json().items() if k in ['date','id','text','type']}, sort_keys=True)
