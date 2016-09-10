@@ -1,5 +1,5 @@
 # habitica-scripts
-Miscellaneous scripts for Habitica
+Miscellaneous scripts for [Habitica](http://habitica.com)
 
 ### Contents
 - 30-day.py
