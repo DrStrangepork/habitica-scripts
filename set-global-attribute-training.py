@@ -11,11 +11,6 @@ parser.add_argument('-u','--user-id', \
                     help='From https://habitica.com/#/options/settings/api')
 parser.add_argument('-k','--api-token', \
                     help='From https://habitica.com/#/options/settings/api')
-# parser.add_argument('-t','--tag', \
-#                     help='Tag of tasks to set (default = all)')
-parser.add_argument('--debug', \
-                    action='store_true', \
-                    help=argparse.SUPPRESS)
 
 
 # MAIN
@@ -48,13 +43,8 @@ new_attr = {"attribute":args.attribute}
 # Get tasks
 req = requests.get(tasksurl, headers=headers)
 tasks = req.json()['data']      # List of tasks
-# if args.tag:
-#     tasks = (x in x where args.tag in task['tags'])
 
 # Update tasks
 for task in req.json()['data']:
     taskurl = "https://habitica.com/api/v3/tasks/" + task['id']
     update_req = requests.put(taskurl, headers=headers, data=json.dumps(new_attr))
-    # print taskurl, headers, new_attr
-    # print update_req.json()
-    print task['id']
