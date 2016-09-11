@@ -13,6 +13,8 @@ Miscellaneous scripts for [Habitica](http://habitica.com)
 - autoforward-missed-dailys.py
     + Based on a specific tag, if a daily is missed, it will be added to the current day's dailys
     + For use with non-daily dailys, e.g. dailys that repeat every Monday
+- set-global-attribute-training.py
+    + Sets the training attribute on your tasks to a given attribute (str, int, con, per)
 
 ### Installation
 - Install [Python](https://www.python.org/downloads/) and (possibly) [pip](https://pip.pypa.io/en/stable/installing/#do-i-need-to-install-pip)
