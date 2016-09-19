@@ -1,4 +1,4 @@
-# habitica-scripts
+# habitica-scripts [![Build Status](https://travis-ci.org/DrStrangepork/habitica-scripts.svg?branch=master)](https://travis-ci.org/DrStrangepork/habitica-scripts)
 Miscellaneous scripts for [Habitica](http://habitica.com)
 
 ### Contents
