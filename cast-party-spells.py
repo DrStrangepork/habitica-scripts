@@ -16,8 +16,14 @@ def unequip(gear):
             req = requests.post("https://habitica.com/api/v3/user/equip/equipped/{}".format(v), headers=headers)
 
 
-
 # MAIN
+# Use the environment variable HAB_API_USER,
+# otherwise replace YOUR_USERID_HERE with your User ID
+USR = os.getenv('HAB_API_USER', "YOUR_USERID_HERE")
+# Use the environment variable HAB_API_TOKEN,
+# otherwise replace YOUR_KEY_HERE with your API token
+KEY = os.getenv('HAB_API_TOKEN', "YOUR_KEY_HERE")
+
 parser.add_argument('-c','--cast', \
                     required=True, \
                     choices=['all','both','none','blessing','protectAura'], \
@@ -34,20 +40,11 @@ if len(sys.argv)==1:
     sys.exit()
 args = parser.parse_args()
 
-if args.user_id:
+if args.user_id is not None:
     USR = args.user_id
-else:
-    # Use the environment variable HAB_API_USER,
-    # otherwise replace YOUR_USERID_HERE with your User ID
-    USR = os.getenv('HAB_API_USER', "YOUR_USERID_HERE")
 
-if args.api_token:
+if args.api_token is not None:
     KEY = args.api_token
-else:
-    # Use the environment variable HAB_API_TOKEN,
-    # otherwise replace YOUR_KEY_HERE with your API token
-    KEY = os.getenv('HAB_API_TOKEN', "YOUR_KEY_HERE")
-
 
 headers = {"x-api-key":KEY,"x-api-user":USR,"Content-Type":"application/json"}
 
@@ -70,7 +67,6 @@ quest = {
     "weapon": "weapon_armoire_glowingSpear"
 }
 
-# MAIN
 # First record what you're already wearing
 req = requests.get("https://habitica.com/api/v3/user", headers=headers)
 # If you "equip" what you're already wearing, you unequip it
