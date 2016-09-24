@@ -1,8 +1,15 @@
 #!/usr/bin/env python
 
-import argparse, json, os, requests, subprocess, sys, time
-
+import argparse, json, os, requests, sys
 parser = argparse.ArgumentParser(description="Set the training attribute on your tasks. See http://habitica.wikia.com/wiki/Automatic_Allocation for more info")
+
+
+class Debug(argparse.Action):
+    def __call__(self, parser, namespace, values, option_string=None):
+        import pdb; pdb.set_trace()
+
+
+# MAIN
 parser.add_argument('-a','--attribute', \
                     required=True, \
                     choices=['str','int','con','per'], \
@@ -11,16 +18,13 @@ parser.add_argument('-u','--user-id', \
                     help='From https://habitica.com/#/options/settings/api')
 parser.add_argument('-k','--api-token', \
                     help='From https://habitica.com/#/options/settings/api')
-
-
-# MAIN
+parser.add_argument('--debug', \
+                    action=Debug, nargs=0, \
+                    help=argparse.SUPPRESS)
 if len(sys.argv)==1:
     parser.print_help()
     sys.exit()
 args = parser.parse_args()
-
-if args.debug:
-    import pdb; pdb.set_trace()
 
 if args.user_id:
     USR = args.user_id
