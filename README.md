@@ -6,19 +6,23 @@ Miscellaneous scripts for [Habitica](http://habitica.com)
     + A 30-day escalating ab/squat exercize routine that creates:
         * One daily "30-Day Ab/Squat Challenge" to track your trend
         * One todo for each day of the Challenge
+- am-i-sleeping.py
+    + Are you sleeping at the Inn? Returns "Yes" or "No"
+- autoforward-missed-dailys.py
+    + Based on a specific tag, if a daily is missed, it will be added to the current day's dailys
+    + For use with non-daily dailys, e.g. dailys that repeat every Monday
+- cast-party-spells.py
+    + Template for equipping a special set of armor to improve stats before casting party spells during a quest. The script is set to the ideal settings for my current avatar (lvl 69 Healer) - first, equip gear for peak CON then cast Protective Aura; second, equip gear for peak CON/INT then cast Blessing; finally, equip gear for peak STR to quest - but you can change it to what best suits your situation.
+- get-tasks.py
+    + Dumps your tasks to a file `hab_tasks.json` in the current directory
+- get-user-data.py
+    + Dumps your user data to a file `user-data.json` in the current directory
 - habitica-backup.py
     + Backs up the JSON data export for offline storage
 - push-todos-with-duedates-to-top.py
     + Moves active tasks with duedates to the top of the To-Dos list (excluding todos with future due dates)
-- autoforward-missed-dailys.py
-    + Based on a specific tag, if a daily is missed, it will be added to the current day's dailys
-    + For use with non-daily dailys, e.g. dailys that repeat every Monday
 - set-global-attribute-training.py
     + Sets the training attribute on your tasks to a given attribute (str, int, con, per)
-- get-user-data.py
-    + Dumps your user data to a file `user-data.json` in the current directory
-- cast-party-spells.py
-    + Template for equipping a special set of armor to improve stats before casting party spells during a quest. The script is set to the ideal settings for my current avatar (lvl 69 Healer) - first, equip gear for peak CON then cast Protective Aura; second, equip gear for peak CON/INT then cast Blessing; finally, equip gear for peak STR to quest - but you can change it to what best suits your situation.
 
 ### Installation
 - Install [Python](https://www.python.org/downloads/) and (possibly) [pip](https://pip.pypa.io/en/stable/installing/#do-i-need-to-install-pip)
