@@ -8,7 +8,7 @@ Miscellaneous scripts for [Habitica](http://habitica.com)
         * One todo for each day of the Challenge
 - am-i-sleeping.py
     + Are you sleeping at the Inn? Returns "Yes" or "No"
-        * Can also return error codes 0 or 1 rather than "Yes" of "No"
+        * Can also return error codes 0 or 1 rather than "Yes" or "No"
 - autoforward-missed-dailys.py
     + Based on a specific tag, if a daily is missed, it will be added to the current day's dailys
     + For use with non-daily dailys, e.g. dailys that repeat every Monday
