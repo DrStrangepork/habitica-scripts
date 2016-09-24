@@ -1,7 +1,12 @@
 #!/usr/bin/env python
 
-import json, os, requests, subprocess, time
-#import pdb; pdb.set_trace()
+import argparse, os, requests, sys
+parser = argparse.ArgumentParser(description="Template for equipping a special set of armor to improve stats before casting party spells during a quest")
+
+
+class Debug(argparse.Action):
+    def __call__(self, parser, namespace, values, option_string=None):
+        import pdb; pdb.set_trace()
 
 
 def unequip(gear):
@@ -11,21 +16,51 @@ def unequip(gear):
             req = requests.post("https://habitica.com/api/v3/user/equip/equipped/{}".format(v), headers=headers)
 
 
-USR = os.getenv('HAB_API_USER', "YOUR_USERID_HERE")
-KEY = os.getenv('HAB_API_TOKEN', "YOUR_KEY_HERE")
+
+# MAIN
+parser.add_argument('-c','--cast', \
+                    required=True, \
+                    choices=['all','both','none','blessing','protectAura'], \
+                    help='Spell(s) to cast')
+parser.add_argument('-u','--user-id', \
+                    help='From https://habitica.com/#/options/settings/api')
+parser.add_argument('-k','--api-token', \
+                    help='From https://habitica.com/#/options/settings/api')
+parser.add_argument('--debug', \
+                    action=Debug, nargs=0, \
+                    help=argparse.SUPPRESS)
+if len(sys.argv)==1:
+    parser.print_help()
+    sys.exit()
+args = parser.parse_args()
+
+if args.user_id:
+    USR = args.user_id
+else:
+    # Use the environment variable HAB_API_USER,
+    # otherwise replace YOUR_USERID_HERE with your User ID
+    USR = os.getenv('HAB_API_USER', "YOUR_USERID_HERE")
+
+if args.api_token:
+    KEY = args.api_token
+else:
+    # Use the environment variable HAB_API_TOKEN,
+    # otherwise replace YOUR_KEY_HERE with your API token
+    KEY = os.getenv('HAB_API_TOKEN', "YOUR_KEY_HERE")
+
 
 headers = {"x-api-key":KEY,"x-api-user":USR,"Content-Type":"application/json"}
 
 aura = {
     "armor": "armor_healer_5",
     "head": "head_armoire_orangeCat",
-    "shield": "shield_healer_5",
+    "shield": "shield_special_goldenknight",
     "weapon": "weapon_armoire_basicCrossbow"
 }
 blessing = {
     "armor": "armor_healer_5",
     "head": "head_special_2",
-    "shield": "shield_healer_5",
+    "shield": "shield_special_goldenknight",
     "weapon": "weapon_healer_6"
 }
 quest = {
@@ -41,12 +76,7 @@ req = requests.get("https://habitica.com/api/v3/user", headers=headers)
 # If you "equip" what you're already wearing, you unequip it
 unequip(req.json()['data']['items']['gear']['equipped'])
 
-# Equip high CON gear to cast Protective Aura
-for k, v in aura.items():
-    req = requests.post("https://habitica.com/api/v3/user/equip/equipped/{}".format(v), headers=headers)
-
-# Cast Protective Aura
-#    Table of skillId. This may also be on the API doc page.
+# Table of skillId. This may also be on the API doc page.
 #    Mage
 #      fireball: "Burst of Flames"
 #      mpHeal: "Ethereal Surge"
@@ -67,17 +97,21 @@ for k, v in aura.items():
 #      protectAura: "Protective Aura"
 #      brightness: "Searing Brightness"
 #      healAll: "Blessing"
-spell = requests.post("https://habitica.com/api/v3/user/class/cast/protectAura", headers=headers)
 
-# Unequip your current gear to ensure that future equips really get equipped
-unequip(req.json()['data']['gear']['equipped'])
+# Protective Aura
+if args.cast in ("all","both","protectAura"):
+    for k, v in aura.items():
+        req = requests.post("https://habitica.com/api/v3/user/equip/equipped/{}".format(v), headers=headers)
+    spell = requests.post("https://habitica.com/api/v3/user/class/cast/protectAura", headers=headers)
+    unequip(req.json()['data']['gear']['equipped'])
 
-# Equip high CON/INT gear to cast Blessing
-for k, v in blessing.items():
-    req = requests.post("https://habitica.com/api/v3/user/equip/equipped/{}".format(v), headers=headers)
-spell = requests.post("https://habitica.com/api/v3/user/class/cast/healAll", headers=headers)
-unequip(req.json()['data']['gear']['equipped'])
+# Blessing
+if args.cast in ("all","both","blessing"):
+    for k, v in blessing.items():
+        req = requests.post("https://habitica.com/api/v3/user/equip/equipped/{}".format(v), headers=headers)
+    spell = requests.post("https://habitica.com/api/v3/user/class/cast/healAll", headers=headers)
+    unequip(req.json()['data']['gear']['equipped'])
 
-# Equip high STR gear for quest
+# Equip for quest
 for k, v in quest.items():
     req = requests.post("https://habitica.com/api/v3/user/equip/equipped/{}".format(v), headers=headers)
