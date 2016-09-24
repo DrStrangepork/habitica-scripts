@@ -1,11 +1,7 @@
 #!/usr/bin/env python
 
-import argparse, os, requests
-parser = argparse.ArgumentParser(description="Organize your tasks with emoji priority emoticons",
-            epilog='''This method of task prioritization and organization is loosely based
-                on the Franklin-Covey ABC model which is similar to the Horizons of Focus
-                model in a GTD (Getting Things Done) methodology. For more information on
-                GTD with Habitica, see http://habitica.wikia.com/wiki/GTD_with_Habitica''')
+import argparse, os, requests, sys
+parser = argparse.ArgumentParser(description="Are you sleeping at the Inn? Returns \"Yes\" or \"No\"")
 
 
 # MAIN
@@ -16,6 +12,9 @@ USR = os.getenv('HAB_API_USER', "YOUR_USERID_HERE")
 # otherwise replace YOUR_KEY_HERE with your API token
 KEY = os.getenv('HAB_API_TOKEN', "YOUR_KEY_HERE")
 
+parser.add_argument('-e','--error-code', \
+                    action='store_true', \
+                    help='Returns 0 or 1 rather than "Yes" of "No"')
 parser.add_argument('-u','--user-id', \
                     help='From https://habitica.com/#/options/settings/api')
 parser.add_argument('-k','--api-token', \
@@ -30,9 +29,14 @@ if args.api_token is not None:
 
 headers = {"x-api-key":KEY,"x-api-user":USR,"Content-Type":"application/json"}
 
-# MAIN
 req = requests.get("https://habitica.com/api/v3/user", headers=headers)
 if req.json()['data']['preferences']['sleep']:
-    print "Yes"
+    if args.error_code:
+        sys.exit(0)
+    else:
+        print "Yes"
 else:
-    print "No"
+    if args.error_code:
+        sys.exit(1)
+    else:
+        print "No"
