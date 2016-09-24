@@ -40,12 +40,11 @@ if args.user_id is not None:
 if args.api_token is not None:
     KEY = args.api_token
 
-tasksurl = "http://habitica.com/api/v3/tasks/user"
 headers = {"x-api-key":KEY,"x-api-user":USR,"Content-Type":"application/json"}
 new_attr = {"attribute":args.attribute}
 
 # Get tasks
-req = requests.get(tasksurl, headers=headers)
+req = requests.get("http://habitica.com/api/v3/tasks/user", headers=headers)
 tasks = req.json()['data']      # List of tasks
 
 # Update tasks
