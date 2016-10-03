@@ -1,7 +1,9 @@
 #!/usr/bin/env python
+# See https://habitica.com/apidoc/#api-User-UserCast for the key map of class spells
 
 import argparse, os, requests, sys
-parser = argparse.ArgumentParser(description="Template for equipping a special set of armor to improve stats before casting party spells during a quest")
+parser = argparse.ArgumentParser(description="Template for equipping a special set of armor \
+                                 to improve stats before casting party spells during a quest")
 
 
 class Debug(argparse.Action):
@@ -26,7 +28,7 @@ KEY = os.getenv('HAB_API_TOKEN', "YOUR_KEY_HERE")
 
 parser.add_argument('-c','--cast', \
                     required=True, \
-                    choices=['all','both','none','blessing','protectAura'], \
+                    choices=['all','both','none','blessing','healAll','protectAura','protectiveaura'], \
                     help='Spell(s) to cast')
 parser.add_argument('-u','--user-id', \
                     help='From https://habitica.com/#/options/settings/api')
@@ -72,37 +74,15 @@ req = requests.get("https://habitica.com/api/v3/user", headers=headers)
 # If you "equip" what you're already wearing, you unequip it
 unequip(req.json()['data']['items']['gear']['equipped'])
 
-# Table of skillId. This may also be on the API doc page.
-#    Mage
-#      fireball: "Burst of Flames"
-#      mpHeal: "Ethereal Surge"
-#      earth: "Earthquake"
-#      frost: "Chilling Frost"
-#    Warrior
-#      smash: "Brutal Smash"
-#      defensiveStance: "Defensive Stance"
-#      valorousPresence: "Valorous Presence"
-#      intimidate: "Intimidating Gaze"
-#    Rogue
-#      pickPocket: "Pickpocket"
-#      backStab: "Backstab"
-#      toolsOfTrade: "Tools of the Trade"
-#      stealth: "Stealth"
-#    Healer
-#      heal: "Healing Light"
-#      protectAura: "Protective Aura"
-#      brightness: "Searing Brightness"
-#      healAll: "Blessing"
-
 # Protective Aura
-if args.cast in ("all","both","protectAura"):
+if args.cast in ("all","both","protectAura","protectiveaura"):
     for k, v in aura.items():
         req = requests.post("https://habitica.com/api/v3/user/equip/equipped/{}".format(v), headers=headers)
     spell = requests.post("https://habitica.com/api/v3/user/class/cast/protectAura", headers=headers)
     unequip(req.json()['data']['gear']['equipped'])
 
 # Blessing
-if args.cast in ("all","both","blessing"):
+if args.cast in ("all","both","blessing","healAll"):
     for k, v in blessing.items():
         req = requests.post("https://habitica.com/api/v3/user/equip/equipped/{}".format(v), headers=headers)
     spell = requests.post("https://habitica.com/api/v3/user/class/cast/healAll", headers=headers)
