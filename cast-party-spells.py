@@ -66,7 +66,7 @@ quest = {
     "armor": "armor_special_finnedOceanicArmor",
     "head": "head_special_2",
     "shield": "shield_armoire_perchingFalcon",
-    "weapon": "weapon_armoire_glowingSpear"
+    "weapon": "weapon_special_2"
 }
 
 # First record what you're already wearing
