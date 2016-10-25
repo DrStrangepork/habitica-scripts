@@ -51,13 +51,13 @@ if args.api_token is not None:
 headers = {"x-api-key":KEY,"x-api-user":USR,"Content-Type":"application/json"}
 
 aura = {
-    "armor": "armor_healer_5",
+    "armor": "armor_special_2",
     "head": "head_armoire_orangeCat",
     "shield": "shield_special_goldenknight",
     "weapon": "weapon_armoire_basicCrossbow"
 }
 blessing = {
-    "armor": "armor_healer_5",
+    "armor": "armor_special_2",
     "head": "head_special_2",
     "shield": "shield_special_goldenknight",
     "weapon": "weapon_healer_6"
