@@ -32,8 +32,8 @@ if len(sys.argv)==1:
 args = parser.parse_args()
 
 try:
-if args.user_id is not None:
-    USR = args.user_id
+    if args.user_id is not None:
+        USR = args.user_id
     else:
         USR = os.environ['HAB_API_USER']
 except KeyError:
@@ -41,8 +41,8 @@ except KeyError:
     sys.exit(1)
 
 try:
-if args.api_token is not None:
-    KEY = args.api_token
+    if args.api_token is not None:
+        KEY = args.api_token
     else:
         KEY = os.environ['HAB_API_TOKEN']
 except KeyError:

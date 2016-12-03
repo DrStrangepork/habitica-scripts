@@ -10,18 +10,6 @@ class Debug(argparse.Action):
 
 
 # MAIN
-# parser.add_argument('-t','--due-today', \
-#                     action=store_boolean, nargs=0, \
-#                     help='Push only today\'s todos to the top')
-# parser.add_argument('-o','--overdue', \
-#                     action=store_boolean, nargs=0, \
-#                     help='Push only overdue todos to the top')
-# parser.add_argument('-a','--all', \
-#                     action=store_boolean, nargs=0, \
-#                     help='Push all todos to the top')
-# parser.add_argument('-r','--reverse', \
-#                     action=store_boolean, nargs=0, \
-#                     help='Sort overdue tasks ')
 # Set the environment variable HAB_API_USER to your User ID
 # or set it via the '-u' argument
 parser.add_argument('-u','--user-id', \
@@ -36,8 +24,8 @@ parser.add_argument('--debug', \
 args = parser.parse_args()
 
 try:
-if args.user_id is not None:
-    USR = args.user_id
+    if args.user_id is not None:
+        USR = args.user_id
     else:
         USR = os.environ['HAB_API_USER']
 except KeyError:
@@ -45,8 +33,8 @@ except KeyError:
     sys.exit(1)
 
 try:
-if args.api_token is not None:
-    KEY = args.api_token
+    if args.api_token is not None:
+        KEY = args.api_token
     else:
         KEY = os.environ['HAB_API_TOKEN']
 except KeyError:
