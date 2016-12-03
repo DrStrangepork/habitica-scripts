@@ -26,6 +26,8 @@ Miscellaneous scripts for [Habitica](http://habitica.com)
     + Moves active tasks with duedates to the top of the To-Dos list (excluding todos with future due dates)
 - set-global-attribute-training.py
     + Sets the training attribute on your tasks to a given attribute (str, int, con, per)
+- task-delete.sh
+    + Simple bash script that deletes a given task ID
 
 ### Installation
 - Install [Python](https://www.python.org/downloads/) and (possibly) [pip](https://pip.pypa.io/en/stable/installing/#do-i-need-to-install-pip)
