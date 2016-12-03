@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 
 import argparse, json, os, requests, sys, time
-parser = argparse.ArgumentParser(description="Set the training attribute on your tasks",
-            epilog="For more info on attribute training, see http://habitica.wikia.com/wiki/Automatic_Allocation")
+parser = argparse.ArgumentParser(description="Backs up the JSON data export for offline storage")
 
 
 class Debug(argparse.Action):
@@ -11,18 +10,15 @@ class Debug(argparse.Action):
 
 
 # MAIN
-# Use the environment variable HAB_API_USER,
-# otherwise replace YOUR_USERID_HERE with your User ID
-USR = os.getenv('HAB_API_USER', "YOUR_USERID_HERE")
-# Use the environment variable HAB_API_TOKEN,
-# otherwise replace YOUR_KEY_HERE with your API token
-KEY = os.getenv('HAB_API_TOKEN', "YOUR_KEY_HERE")
-
 parser.add_argument('-d','--database', \
                     required=True, \
                     help='Path to json db file')
+# Set the environment variable HAB_API_USER to your User ID
+# or set it via the '-u' argument
 parser.add_argument('-u','--user-id', \
                     help='From https://habitica.com/#/options/settings/api')
+# Set the environment variable HAB_API_TOKEN to your API token
+# or set it via the '-k' argument
 parser.add_argument('-k','--api-token', \
                     help='From https://habitica.com/#/options/settings/api')
 parser.add_argument('--debug', \
@@ -33,11 +29,24 @@ if len(sys.argv)==1:
     sys.exit()
 args = parser.parse_args()
 
-if args.user_id is not None:
-    USR = args.user_id
+try:
+    if args.user_id is not None:
+        USR = args.user_id
+    else:
+        USR = os.environ['HAB_API_USER']
+except KeyError:
+    print "Environment variable 'HAB_API_USER' is not set"
+    sys.exit(1)
 
-if args.api_token is not None:
-    KEY = args.api_token
+try:
+    if args.api_token is not None:
+        KEY = args.api_token
+    else:
+        KEY = os.environ['HAB_API_TOKEN']
+except KeyError:
+    print "Environment variable 'HAB_API_TOKEN' is not set"
+    sys.exit(1)
+
 
 headers = {"x-api-key":KEY,"x-api-user":USR,"Content-Type":"application/json"}
 now = unicode(time.strftime("%Y-%m-%dT%H:%M:%S%z"))

@@ -27,20 +27,15 @@ Miscellaneous scripts for [Habitica](http://habitica.com)
 
 ### Installation
 - Install [Python](https://www.python.org/downloads/) and (possibly) [pip](https://pip.pypa.io/en/stable/installing/#do-i-need-to-install-pip)
-    + Scripts have been tested with python 2.7 but should work with 3.x
+    + Scripts have been tested with python 2.7
+    + Scripts DO NOT work with 3.x (a future feature)
 - Clone the repo
     + `git clone https://github.com/DrStrangepork/habitica-scripts.git`
 - Install pip packages
     + `pip install -r requirements.txt`
 
 ### Customize
-These scripts access your Habitica account via the [Habitica API](https://habitica.com/apidoc/), so you must configure them with your [Habitica User ID and API Token](https://habitica.com/#/options/settings/api):
-```
-USR = os.getenv('HAB_API_USER', "YOUR_USERID_HERE")
-KEY = os.getenv('HAB_API_TOKEN', "YOUR_KEY_HERE")
-```
-
-The variables USR and KEY map to your User ID and API Token, respectively. You can either set the environment variables `HAB_API_USER` and `HAB_API_TOKEN` to your User ID and API Token or change the strings "YOUR_USERID_HERE" and "YOUR_KEY_HERE" to your User ID and API Token.
+These scripts access your Habitica account via the [Habitica API](https://habitica.com/apidoc/), so you must get your User ID and API Token from the [API Settings](https://habitica.com/#/options/settings/api) page of your account. You can either set the environment variables `HAB_API_USER` and `HAB_API_TOKEN` to your User ID and API Token or set them via the `-u` and `-k` arguments, respectively, on the command line (only for `*.py` scripts).
 
 ### shell/curl example
 - To delete all unfinished todo's within a 30-day challenge:
