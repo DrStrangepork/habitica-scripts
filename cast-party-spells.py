@@ -1,9 +1,9 @@
 #!/usr/bin/env python
-# See https://habitica.com/apidoc/#api-User-UserCast for the key map of class spells
 
 import argparse, os, requests, sys
 parser = argparse.ArgumentParser(description="Template for equipping a special set of armor \
-                                 to improve stats before casting party spells during a quest")
+                                 to improve stats before casting party spells during a quest",
+            epilog="See https://habitica.com/apidoc/#api-User-UserCast for the key map of class spells")
 
 
 class Debug(argparse.Action):
