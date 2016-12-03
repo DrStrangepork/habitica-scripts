@@ -46,7 +46,7 @@ if args.api_token is not None:
 
 headers = {"x-api-user":USR,"x-api-key":KEY,"Content-Type":"application/json"}
 
-duedate = unicode(time.strftime("%Y-%m-%d"))
+today = unicode(time.strftime("%Y-%m-%d"))
 duetoday = []
 
 req = requests.get("https://habitica.com/api/v3/tasks/user?type=todos", headers=headers)
