@@ -20,6 +20,8 @@ Miscellaneous scripts for [Habitica](http://habitica.com)
     + Dumps your user data to a file `user-data.json` in the current directory
 - habitica-backup.py
     + Backs up the JSON data export for offline storage
+- party-health-check.sh
+    + Checks the health of all party members and casts Blessing until all members are above a given threshold (default 30hp)
 - push-todos-with-duedates-to-top.py
     + Moves active tasks with duedates to the top of the To-Dos list (excluding todos with future due dates)
 - set-global-attribute-training.py
