@@ -1,0 +1,34 @@
+---
+# Official docker image
+image: python:2-onbuild
+
+stages:
+    - test
+    # - deploy
+
+variables:
+    # CI_BUILD_REF=<commit_hash>
+    # CI_BUILD_REF_NAME=<branch_name>
+    PIPELINE: $CI_PROJECT_NAME
+
+test:
+    stage: test
+    script:
+        - env | sort
+        - tests/30-day.sh
+        - tests/am-i-sleeping.sh
+        - tests/autoforward-missed-dailys.sh
+        - tests/cast-party-spells.sh
+        - tests/get-tasks.sh
+        - tests/get-user-data.sh
+        - tests/habitica-backup.sh
+        - tests/party-health-check.sh
+        - tests/push-todos-with-duedates-to-top.sh
+        - tests/set-global-attribute-training.sh
+
+# deploy:
+#     stage: deploy
+#     script:
+#         - ./deploy.sh
+#     only:
+#         - master
