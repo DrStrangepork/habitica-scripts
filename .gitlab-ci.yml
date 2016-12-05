@@ -1,6 +1,6 @@
 ---
 # Official docker image
-image: python:2-onbuild
+image: python:2.7-slim
 
 stages:
     - test
@@ -15,6 +15,7 @@ test:
     stage: test
     script:
         - env | sort
+        - pip install -r requirements.txt
         - tests/30-day.sh
         - tests/am-i-sleeping.sh
         - tests/autoforward-missed-dailys.sh
