@@ -13,10 +13,10 @@ variables:
 
 before_script:
     - npm install -g npm@3
-    - sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
-    - echo 'deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen' | sudo tee /etc/apt/sources.list.d/mongodb.list
-    - sudo apt-get update
-    - sudo apt-get install -y --no-install-recommends jq mongodb-org-server
+    - apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
+    - echo 'deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen' | tee /etc/apt/sources.list.d/mongodb.list
+    - apt-get update
+    - apt-get install -y --no-install-recommends jq mongodb-org-server
     - rm -rf /var/lib/apt/lists/*
     - pip install -r requirements.txt
     - git clone https://github.com/HabitRPG/habitica.git ../habitica
