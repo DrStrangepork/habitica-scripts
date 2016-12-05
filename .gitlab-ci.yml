@@ -16,13 +16,12 @@ before_script:
     - rm -rf /var/lib/apt/lists/*
         # tcl \
         # tk \
-
+    - pip install -r requirements.txt
 
 test:
     stage: test
     script:
         - env | sort
-        - pip install -r requirements.txt
         - tests/30-day.sh
         - tests/am-i-sleeping.sh
         - tests/autoforward-missed-dailys.sh
