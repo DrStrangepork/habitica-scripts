@@ -1,6 +1,6 @@
 ---
-# Official docker image
-image: python:2.7-slim
+image: node:4.3.1
+# image: node:7.2
 
 stages:
     - test
@@ -12,11 +12,16 @@ variables:
     PIPELINE: $CI_PROJECT_NAME
 
 before_script:
-    - apt-get update && apt-get install -y --no-install-recommends jq
+    - npm install -g npm@3
+    - sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
+    - echo 'deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen' | sudo tee /etc/apt/sources.list.d/mongodb.list
+    - sudo apt-get update
+    - sudo apt-get install -y --no-install-recommends jq mongodb-org-server
     - rm -rf /var/lib/apt/lists/*
-        # tcl \
-        # tk \
     - pip install -r requirements.txt
+    - git clone https://github.com/HabitRPG/habitica.git ../habitica
+    - until nc -z localhost 27017; do echo Waiting for MongoDB; sleep 1; done
+    - cd ../habitica && cp config.json.example config.json && npm install && cd -
 
 test:
     stage: test
