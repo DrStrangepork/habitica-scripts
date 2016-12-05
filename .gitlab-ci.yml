@@ -11,6 +11,13 @@ variables:
     # CI_BUILD_REF_NAME=<branch_name>
     PIPELINE: $CI_PROJECT_NAME
 
+before_script:
+    - apt-get update && apt-get install -y --no-install-recommends jq
+    - rm -rf /var/lib/apt/lists/*
+        # tcl \
+        # tk \
+
+
 test:
     stage: test
     script:
