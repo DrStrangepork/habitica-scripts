@@ -1,0 +1,41 @@
+---
+# Official docker image
+image: python:2.7-slim
+
+stages:
+    - test
+    # - deploy
+
+variables:
+    # CI_BUILD_REF=<commit_hash>
+    # CI_BUILD_REF_NAME=<branch_name>
+    PIPELINE: $CI_PROJECT_NAME
+
+before_script:
+    - apt-get update && apt-get install -y --no-install-recommends jq
+    - rm -rf /var/lib/apt/lists/*
+        # tcl \
+        # tk \
+    - pip install -r requirements.txt
+
+test:
+    stage: test
+    script:
+        - env | sort
+        - tests/30-day.sh
+        - tests/am-i-sleeping.sh
+        - tests/autoforward-missed-dailys.sh
+        - tests/cast-party-spells.sh
+        - tests/get-tasks.sh
+        - tests/get-user-data.sh
+        - tests/habitica-backup.sh
+        - tests/party-health-check.sh
+        - tests/push-todos-with-duedates-to-top.sh
+        - tests/set-global-attribute-training.sh
+
+# deploy:
+#     stage: deploy
+#     script:
+#         - ./deploy.sh
+#     only:
+#         - master
