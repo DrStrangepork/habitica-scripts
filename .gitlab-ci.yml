@@ -1,5 +1,5 @@
 ---
-image: python:2.7-slim
+image: ruby:2.1
 
 stages:
     - test
@@ -19,7 +19,7 @@ before_script:
     - echo "deb http://repo.mongodb.org/apt/debian jessie/mongodb-org/3.4 main" | tee /etc/apt/sources.list.d/mongodb-org-3.4.list
     - apt-get update
     # python and jq
-    - apt-get install -y --no-install-recommends jq nodejs npm
+    - apt-get install -y --no-install-recommends jq nodejs npm python python-dev python-pip python-virtualenv
     - pip install -r requirements.txt
     # mongo
     - apt-get install -y --no-install-recommends mongodb-org
