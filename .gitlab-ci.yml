@@ -3,6 +3,7 @@ image: node:4.3.1
 # image: node:7.2
 services:
     - mongo
+    - python
 
 stages:
     - test
@@ -14,13 +15,15 @@ variables:
     PIPELINE: $CI_PROJECT_NAME
 
 before_script:
+    - env | sort
+    # Enable policy
+    - rm /usr/sbin/policy-rc.d
     - npm install -g npm@3
     - apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
     - echo 'deb http://downloads-distro.mongodb.org/repo/debian-sysvinit dist 10gen' | tee /etc/apt/sources.list.d/mongodb.list
     - apt-get update
     - apt-get install -y --no-install-recommends jq mongodb-org-server
     - rm -rf /var/lib/apt/lists/*
-    - pip install -r requirements.txt
     - git clone https://github.com/HabitRPG/habitica.git ../habitica
     - until nc -z localhost 27017; do echo Waiting for MongoDB; sleep 1; done
     - cd ../habitica && cp config.json.example config.json && npm install && cd -
@@ -28,10 +31,10 @@ before_script:
 test:
     stage: test
     variables:
-        CI_DEBUG_TRACE: "true"
+        # CI_DEBUG_TRACE: "true"
         HABITICA: "https://hab.rickkasten.com/api/v3"
     script:
-        - env | sort
+        - pip install -r requirements.txt
         - tests/30-day.sh
         - tests/am-i-sleeping.sh
         - tests/autoforward-missed-dailys.sh
