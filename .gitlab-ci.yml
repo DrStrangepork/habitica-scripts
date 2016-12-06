@@ -1,6 +1,8 @@
 ---
 image: node:4.3.1
 # image: node:7.2
+services:
+    - mongo
 
 stages:
     - test
