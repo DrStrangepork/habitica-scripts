@@ -34,7 +34,7 @@ before_script:
 test:
     stage: test
     variables:
-        CI_DEBUG_TRACE: true
+        CI_DEBUG_TRACE: "true"
     script:
         - env | sort
         - tests/30-day.sh
