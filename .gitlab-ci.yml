@@ -22,7 +22,7 @@ before_script:
 
     - npm install -g npm@3
     - apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
-    - echo 'deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen' | tee /etc/apt/sources.list.d/mongodb.list
+    - echo 'deb http://downloads-distro.mongodb.org/repo/debian-sysvinit dist 10gen' | tee /etc/apt/sources.list.d/mongodb.list
     - apt-get update
     - apt-get install -y --no-install-recommends jq mongodb-org-server
     - rm -rf /var/lib/apt/lists/*
@@ -33,6 +33,8 @@ before_script:
 
 test:
     stage: test
+    variables:
+        CI_DEBUG_TRACE: true
     script:
         - env | sort
         - tests/30-day.sh
