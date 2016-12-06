@@ -1,9 +1,5 @@
 ---
-image: node:4.3.1
-# image: node:7.2
-services:
-    - mongo:3.4
-    - python:2.7
+image: node:7.2
 
 stages:
     - test
@@ -18,15 +14,22 @@ before_script:
     - env | sort
     # Enable policy
     - rm /usr/sbin/policy-rc.d
-    - npm install -g npm@3
-    # Not sure we need mongo here
-    # - apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
-    # - echo 'deb http://downloads-distro.mongodb.org/repo/debian-sysvinit dist 10gen' | tee /etc/apt/sources.list.d/mongodb.list
+    # mongo
+    - apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0C49F3730359A14518585931BC711F9BA15703C6
+    - echo "deb http://repo.mongodb.org/apt/debian jessie/mongodb-org/3.4 main" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.4.list
     - apt-get update
-    - apt-get install -y --no-install-recommends jq #mongodb-org-server
-    - rm -rf /var/lib/apt/lists/*
-    - git clone https://github.com/HabitRPG/habitica.git ../habitica
+    - apt-get install -y --no-install-recommends mongodb-org-server
+    - service mongod start
     - until curl -qs localhost:27017; do echo Waiting for MongoDB; sleep 1; done
+    # python and jq
+    - apt-get install -y --no-install-recommends jq python python-dev python-pip python-virtualenv
+    - pip install -r requirements.txt
+    # Clean up apt
+    - rm -rf /var/lib/apt/lists/*
+    # Upgrade npm
+    - npm install -g npm@3
+    # clone and start Habitica
+    - git clone https://github.com/HabitRPG/habitica.git ../habitica
     - cd ../habitica && cp config.json.example config.json && npm install && cd -
 
 test:
@@ -35,7 +38,6 @@ test:
         # CI_DEBUG_TRACE: "true"
         HABITICA: "https://hab.rickkasten.com/api/v3"
     script:
-        - pip install -r requirements.txt
         - tests/30-day.sh
         - tests/am-i-sleeping.sh
         - tests/autoforward-missed-dailys.sh
