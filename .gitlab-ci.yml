@@ -2,8 +2,8 @@
 image: node:4.3.1
 # image: node:7.2
 services:
-    - mongo
-    - python
+    - mongo:3.4
+    - python:2.7
 
 stages:
     - test
@@ -19,10 +19,11 @@ before_script:
     # Enable policy
     - rm /usr/sbin/policy-rc.d
     - npm install -g npm@3
-    - apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
-    - echo 'deb http://downloads-distro.mongodb.org/repo/debian-sysvinit dist 10gen' | tee /etc/apt/sources.list.d/mongodb.list
+    # Not sure we need mongo here
+    # - apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
+    # - echo 'deb http://downloads-distro.mongodb.org/repo/debian-sysvinit dist 10gen' | tee /etc/apt/sources.list.d/mongodb.list
     - apt-get update
-    - apt-get install -y --no-install-recommends jq mongodb-org-server
+    - apt-get install -y --no-install-recommends jq #mongodb-org-server
     - rm -rf /var/lib/apt/lists/*
     - git clone https://github.com/HabitRPG/habitica.git ../habitica
     - until curl -qs localhost:27017; do echo Waiting for MongoDB; sleep 1; done
