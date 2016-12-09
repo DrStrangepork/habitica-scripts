@@ -31,7 +31,10 @@ before_script:
     - npm install -g npm@3
     # clone and start Habitica
     - git clone https://github.com/HabitRPG/habitica.git ../habitica
-    - cd ../habitica && cp config.json.example config.json && npm install && cd -
+    - cd ../habitica
+    - cp config.json.example config.json
+    - npm install
+    - cd $CI_PROJECT_DIR
 
 test:
     stage: test
