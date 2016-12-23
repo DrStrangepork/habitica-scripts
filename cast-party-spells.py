@@ -21,8 +21,11 @@ def unequip(gear):
 # MAIN
 parser.add_argument('-c','--cast', \
                     required=True, \
-                    choices=['all','both','none','blessing','healAll','protectAura','protectiveaura'], \
+                    choices=['all','both','none','blessing','healAll','protect','protectAura','protectiveaura'], \
                     help='Spell(s) to cast')
+parser.add_argument('-b','--bossquest', \
+                    action='store_true', \
+                    help='Equip a special equipment set for fighting bosses')
 # Set the environment variable HAB_API_USER to your User ID
 # or set it via the '-u' argument
 parser.add_argument('-u','--user-id', \
@@ -60,24 +63,38 @@ except KeyError:
 
 headers = {"x-api-key":KEY,"x-api-user":USR,"Content-Type":"application/json"}
 
+# Max out Constitution
 aura = {
-    "armor": "armor_special_2",
+    "armor": "armor_healer_5",
     "head": "head_armoire_orangeCat",
     "shield": "shield_special_goldenknight",
-    "weapon": "weapon_armoire_basicCrossbow"
+    "weapon": "weapon_armoire_blueLongbow"
 }
+# Max out Constitution and Intelligence
 blessing = {
     "armor": "armor_special_2",
     "head": "head_special_2",
     "shield": "shield_special_goldenknight",
     "weapon": "weapon_healer_6"
 }
-quest = {
+# Max out Strength
+bossquest = {
     "armor": "armor_special_finnedOceanicArmor",
     "head": "head_special_2",
     "shield": "shield_armoire_perchingFalcon",
     "weapon": "weapon_special_2"
 }
+# Max out all attributes
+quest = {
+    "armor": "armor_special_2",
+    "head": "head_special_2",
+    "shield": "shield_special_goldenknight",
+    "weapon": "weapon_special_2"
+}
+
+# If bossquest, then set questing equipment set to that
+if args.bossquest:
+    quest = bossquest
 
 # First record what you're already wearing
 req = requests.get("https://habitica.com/api/v3/user", headers=headers)
@@ -85,7 +102,7 @@ req = requests.get("https://habitica.com/api/v3/user", headers=headers)
 unequip(req.json()['data']['items']['gear']['equipped'])
 
 # Protective Aura
-if args.cast in ("all","both","protectAura","protectiveaura"):
+if args.cast in ("all","both","protect","protectAura","protectiveaura"):
     for k, v in aura.items():
         req = requests.post("https://habitica.com/api/v3/user/equip/equipped/{}".format(v), headers=headers)
     spell = requests.post("https://habitica.com/api/v3/user/class/cast/protectAura", headers=headers)
