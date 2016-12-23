@@ -21,6 +21,9 @@ parser.add_argument('-u','--user-id', \
 # or set it via the '-k' argument
 parser.add_argument('-k','--api-token', \
                     help='From https://habitica.com/#/options/settings/api')
+# Set the Habitica URL (useful for testing local install)
+parser.add_argument('--url', \
+                    help='From https://habitica.com/#/options/settings/api')
 parser.add_argument('--debug', \
                     action=Debug, nargs=0, \
                     help=argparse.SUPPRESS)
@@ -44,10 +47,15 @@ except KeyError:
     print "Environment variable 'HAB_API_TOKEN' is not set"
     sys.exit(1)
 
+if args.url is not None:
+    URL = args.url
+else:
+    URL = "https://habitica.com/api/v3/user"
+
 
 headers = {"x-api-key":KEY,"x-api-user":USR,"Content-Type":"application/json"}
 
-req = requests.get("https://habitica.com/api/v3/user", headers=headers)
+req = requests.get(URL, headers=headers)
 if req.json()['data']['preferences']['sleep']:
     if args.error_code:
         sys.exit(0)

@@ -6,6 +6,9 @@ Miscellaneous scripts for [Habitica](http://habitica.com)
     + A 30-day escalating ab/squat exercize routine that creates:
         * One daily "30-Day Ab/Squat Challenge" to track your trend
         * One todo for each day of the Challenge
+- am-i-on-a-quest.py
+    + Are you participating in a quest or pending quest? Returns "Yes" or "No"
+        * Can also return error codes 0 or 1 rather than "Yes" or "No"
 - am-i-sleeping.py
     + Are you sleeping at the Inn? Returns "Yes" or "No"
         * Can also return error codes 0 or 1 rather than "Yes" or "No"
@@ -15,7 +18,7 @@ Miscellaneous scripts for [Habitica](http://habitica.com)
 - cast-party-spells.py
     + Template for equipping a special set of armor to improve stats before casting party spells during a quest. The script is set to the ideal settings for my current avatar (lvl 69 Healer) - first, equip gear for peak CON then cast Protective Aura; second, equip gear for peak CON/INT then cast Blessing; finally, equip gear for peak STR to quest - but you can change it to what best suits your situation.
 - get-tasks.py
-    + Dumps your tasks to a file `hab_tasks.json` in the current directory
+    + Dumps your tasks to a file `user-tasks.json` in the current directory
 - get-user-data.py
     + Dumps your user data to a file `user-data.json` in the current directory
 - habitica-backup.py
@@ -56,4 +59,5 @@ done
 ### To-do
 1. Create authentication scheme similar to AWS CLI (for saving API keys)
 2. Add task up/down scripts
+3. Add '--url' argument to all
 --->

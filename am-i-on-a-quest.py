@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-import argparse, json, os, requests, sys
-parser = argparse.ArgumentParser(description="Dumps your user data to a file user-data.json in the current directory")
+import argparse, os, requests, sys
+parser = argparse.ArgumentParser(description="Are you on a quest with your party? Returns \"Yes\" or \"No\"")
 
 
 class Debug(argparse.Action):
@@ -10,8 +10,9 @@ class Debug(argparse.Action):
 
 
 # MAIN
-parser.add_argument('-o','--outfile', \
-                    help='JSON data file (default: user-data.json)')
+parser.add_argument('-e','--error-code', \
+                    action='store_true', \
+                    help='Returns 0 or 1 rather than "Yes" of "No"')
 # Set the environment variable HAB_API_USER to your User ID
 # or set it via the '-u' argument
 parser.add_argument('-u','--user-id', \
@@ -46,11 +47,6 @@ except KeyError:
     print "Environment variable 'HAB_API_TOKEN' is not set"
     sys.exit(1)
 
-if args.outfile is not None:
-    OUT = args.outfile
-else:
-    OUT = 'user-data.json'
-
 if args.url is not None:
     URL = args.url
 else:
@@ -60,5 +56,13 @@ else:
 headers = {"x-api-key":KEY,"x-api-user":USR,"Content-Type":"application/json"}
 
 req = requests.get(URL, headers=headers)
-with open(OUT, 'w') as f:
-    json.dump(req.json(),f,separators=(',',':'),sort_keys=True)
+if req.json()['data']['party']['quest']['key']:
+    if args.error_code:
+        sys.exit(0)
+    else:
+        print "Yes"
+else:
+    if args.error_code:
+        sys.exit(1)
+    else:
+        print "No"
