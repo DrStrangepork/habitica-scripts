@@ -59,5 +59,5 @@ done
 ### To-do
 1. Create authentication scheme similar to AWS CLI (for saving API keys)
 2. Add task up/down scripts
-3. Add '--url' argument to all
+3. Add '--baseurl' argument to all
 --->

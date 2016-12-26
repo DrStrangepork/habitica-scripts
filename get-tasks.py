@@ -21,8 +21,8 @@ parser.add_argument('-u','--user-id', \
 parser.add_argument('-k','--api-token', \
                     help='From https://habitica.com/#/options/settings/api')
 # Set the Habitica URL (useful for testing local install)
-parser.add_argument('--url', \
-                    help='From https://habitica.com/#/options/settings/api')
+parser.add_argument('--baseurl', \
+                    help=argparse.SUPPRESS)
 parser.add_argument('--debug', \
                     action=Debug, nargs=0, \
                     help=argparse.SUPPRESS)
@@ -51,8 +51,8 @@ if args.outfile is not None:
 else:
     OUT = 'user-tasks.json'
 
-if args.url is not None:
-    URL = args.url
+if args.baseurl is not None:
+    URL = args.baseurl + "/api/v3/tasks/user"
 else:
     URL = "https://habitica.com/api/v3/tasks/user"
 
