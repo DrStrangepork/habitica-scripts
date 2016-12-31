@@ -19,19 +19,19 @@ def unequip(gear):
 
 
 # MAIN
-# Use the environment variable HAB_API_USER,
-# otherwise replace YOUR_USERID_HERE with your User ID
-USR = os.getenv('HAB_API_USER', "YOUR_USERID_HERE")
-# Use the environment variable HAB_API_TOKEN,
-# otherwise replace YOUR_KEY_HERE with your API token
-KEY = os.getenv('HAB_API_TOKEN', "YOUR_KEY_HERE")
-
 parser.add_argument('-c','--cast', \
                     required=True, \
-                    choices=['all','both','none','blessing','healAll','protectAura','protectiveaura'], \
+                    choices=['all','both','none','blessing','healAll','protect','protectAura','protectiveaura'], \
                     help='Spell(s) to cast')
+parser.add_argument('-b','--bossquest', \
+                    action='store_true', \
+                    help='Equip a special equipment set for fighting bosses')
+# Set the environment variable HAB_API_USER to your User ID
+# or set it via the '-u' argument
 parser.add_argument('-u','--user-id', \
                     help='From https://habitica.com/#/options/settings/api')
+# Set the environment variable HAB_API_TOKEN to your API token
+# or set it via the '-k' argument
 parser.add_argument('-k','--api-token', \
                     help='From https://habitica.com/#/options/settings/api')
 parser.add_argument('--debug', \
@@ -42,32 +42,59 @@ if len(sys.argv)==1:
     sys.exit()
 args = parser.parse_args()
 
-if args.user_id is not None:
-    USR = args.user_id
+try:
+    if args.user_id is not None:
+        USR = args.user_id
+    else:
+        USR = os.environ['HAB_API_USER']
+except KeyError:
+    print "Environment variable 'HAB_API_USER' is not set"
+    sys.exit(1)
 
-if args.api_token is not None:
-    KEY = args.api_token
+try:
+    if args.api_token is not None:
+        KEY = args.api_token
+    else:
+        KEY = os.environ['HAB_API_TOKEN']
+except KeyError:
+    print "Environment variable 'HAB_API_TOKEN' is not set"
+    sys.exit(1)
+
 
 headers = {"x-api-key":KEY,"x-api-user":USR,"Content-Type":"application/json"}
 
+# Max out Constitution
 aura = {
-    "armor": "armor_special_2",
+    "armor": "armor_healer_5",
     "head": "head_armoire_orangeCat",
     "shield": "shield_special_goldenknight",
-    "weapon": "weapon_armoire_basicCrossbow"
+    "weapon": "weapon_armoire_blueLongbow"
 }
+# Max out Constitution and Intelligence
 blessing = {
     "armor": "armor_special_2",
     "head": "head_special_2",
     "shield": "shield_special_goldenknight",
     "weapon": "weapon_healer_6"
 }
-quest = {
+# Max out Strength
+bossquest = {
     "armor": "armor_special_finnedOceanicArmor",
     "head": "head_special_2",
     "shield": "shield_armoire_perchingFalcon",
     "weapon": "weapon_special_2"
 }
+# Max out all attributes
+quest = {
+    "armor": "armor_special_2",
+    "head": "head_special_2",
+    "shield": "shield_special_goldenknight",
+    "weapon": "weapon_special_2"
+}
+
+# If bossquest, then set questing equipment set to that
+if args.bossquest:
+    quest = bossquest
 
 # First record what you're already wearing
 req = requests.get("https://habitica.com/api/v3/user", headers=headers)
@@ -75,7 +102,7 @@ req = requests.get("https://habitica.com/api/v3/user", headers=headers)
 unequip(req.json()['data']['items']['gear']['equipped'])
 
 # Protective Aura
-if args.cast in ("all","both","protectAura","protectiveaura"):
+if args.cast in ("all","both","protect","protectAura","protectiveaura"):
     for k, v in aura.items():
         req = requests.post("https://habitica.com/api/v3/user/equip/equipped/{}".format(v), headers=headers)
     spell = requests.post("https://habitica.com/api/v3/user/class/cast/protectAura", headers=headers)

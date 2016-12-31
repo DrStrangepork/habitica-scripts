@@ -6,6 +6,9 @@ Miscellaneous scripts for [Habitica](http://habitica.com)
     + A 30-day escalating ab/squat exercize routine that creates:
         * One daily "30-Day Ab/Squat Challenge" to track your trend
         * One todo for each day of the Challenge
+- am-i-on-a-quest.py
+    + Are you participating in a quest or pending quest? Returns "Yes" or "No"
+        * Can also return error codes 0 or 1 rather than "Yes" or "No"
 - am-i-sleeping.py
     + Are you sleeping at the Inn? Returns "Yes" or "No"
         * Can also return error codes 0 or 1 rather than "Yes" or "No"
@@ -15,32 +18,31 @@ Miscellaneous scripts for [Habitica](http://habitica.com)
 - cast-party-spells.py
     + Template for equipping a special set of armor to improve stats before casting party spells during a quest. The script is set to the ideal settings for my current avatar (lvl 69 Healer) - first, equip gear for peak CON then cast Protective Aura; second, equip gear for peak CON/INT then cast Blessing; finally, equip gear for peak STR to quest - but you can change it to what best suits your situation.
 - get-tasks.py
-    + Dumps your tasks to a file `hab_tasks.json` in the current directory
+    + Dumps your tasks to a file `user-tasks.json` in the current directory
 - get-user-data.py
     + Dumps your user data to a file `user-data.json` in the current directory
 - habitica-backup.py
     + Backs up the JSON data export for offline storage
+- party-health-check.sh
+    + Checks the health of all party members and casts Blessing until all members are above a given threshold (default 30hp)
 - push-todos-with-duedates-to-top.py
     + Moves active tasks with duedates to the top of the To-Dos list (excluding todos with future due dates)
 - set-global-attribute-training.py
     + Sets the training attribute on your tasks to a given attribute (str, int, con, per)
+- task-delete.sh
+    + Simple bash script that deletes a given task ID
 
 ### Installation
 - Install [Python](https://www.python.org/downloads/) and (possibly) [pip](https://pip.pypa.io/en/stable/installing/#do-i-need-to-install-pip)
-    + Scripts have been tested with python 2.7 but should work with 3.x
+    + Scripts have been tested with python 2.7
+    + Scripts DO NOT work with 3.x (a future feature)
 - Clone the repo
     + `git clone https://github.com/DrStrangepork/habitica-scripts.git`
 - Install pip packages
     + `pip install -r requirements.txt`
 
 ### Customize
-These scripts access your Habitica account via the [Habitica API](https://habitica.com/apidoc/), so you must configure them with your [Habitica User ID and API Token](https://habitica.com/#/options/settings/api):
-```
-USR = os.getenv('HAB_API_USER', "YOUR_USERID_HERE")
-KEY = os.getenv('HAB_API_TOKEN', "YOUR_KEY_HERE")
-```
-
-The variables USR and KEY map to your User ID and API Token, respectively. You can either set the environment variables `HAB_API_USER` and `HAB_API_TOKEN` to your User ID and API Token or change the strings "YOUR_USERID_HERE" and "YOUR_KEY_HERE" to your User ID and API Token.
+These scripts access your Habitica account via the [Habitica API](https://habitica.com/apidoc/), so you must get your User ID and API Token from the [API Settings](https://habitica.com/#/options/settings/api) page of your account. You can either set the environment variables `HAB_API_USER` and `HAB_API_TOKEN` to your User ID and API Token or set them via the `-u` and `-k` arguments, respectively, on the command line (only for `*.py` scripts).
 
 ### shell/curl example
 - To delete all unfinished todo's within a 30-day challenge:
@@ -57,4 +59,5 @@ done
 ### To-do
 1. Create authentication scheme similar to AWS CLI (for saving API keys)
 2. Add task up/down scripts
+3. Add '--baseurl' argument to all
 --->
