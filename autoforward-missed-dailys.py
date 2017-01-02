@@ -10,61 +10,61 @@ class Debug(argparse.Action):
 
 
 # MAIN
-# Set the environment variable HAB_API_USER to your User ID
-# or set it via the '-u' argument
-parser.add_argument('-u','--user-id', \
-                    help='From https://habitica.com/#/options/settings/api')
-# Set the environment variable HAB_API_TOKEN to your API token
-# or set it via the '-k' argument
-parser.add_argument('-k','--api-token', \
-                    help='From https://habitica.com/#/options/settings/api')
-parser.add_argument('--debug', \
-                    action=Debug, nargs=0, \
+parser.add_argument('-t','--tag',
+                    type=str, default="auto-forward",
+                    help='Auto-forward tag')
+parser.add_argument('-m','--message',
+                    type=str, default="AUTO-FORWARDED",
+                    help='Reminder message added to task title')
+parser.add_argument('-u','--user-id',
+                    help='From https://habitica.com/#/options/settings/api\n \
+                    default: environment variable HAB_API_USER')
+parser.add_argument('-k','--api-token',
+                    help='From https://habitica.com/#/options/settings/api\n \
+                    default: environment variable HAB_API_TOKEN')
+parser.add_argument('--baseurl',
+                    type=str, default="https://habitica.com",
+                    help='API server (default: https://habitica.com)')
+parser.add_argument('--debug',
+                    action=Debug, nargs=0,
                     help=argparse.SUPPRESS)
 args = parser.parse_args()
+args.baseurl += "/api/v3/"
 
 try:
-    if args.user_id is not None:
-        USR = args.user_id
-    else:
-        USR = os.environ['HAB_API_USER']
+    if args.user_id is None:
+        args.user_id = os.environ['HAB_API_USER']
 except KeyError:
-    print "Environment variable 'HAB_API_USER' is not set"
+    print "User ID must be set by the -u/--user-id option or by setting the environment variable 'HAB_API_USER'"
     sys.exit(1)
 
 try:
-    if args.api_token is not None:
-        KEY = args.api_token
-    else:
-        KEY = os.environ['HAB_API_TOKEN']
+    if args.api_token is None:
+        args.api_token = os.environ['HAB_API_TOKEN']
 except KeyError:
-    print "Environment variable 'HAB_API_TOKEN' is not set"
+    print "API Token must be set by the -k/--api-token option or by setting the environment variable 'HAB_API_TOKEN'"
     sys.exit(1)
 
 
-TAG = "auto-forward"
-TXT = "AUTO-FORWARDED"
-headers = {"x-api-user":USR,"x-api-key":KEY,"Content-Type":"application/json"}
+headers = {"x-api-user":args.user_id,"x-api-key":args.api_token,"Content-Type":"application/json"}
 
-# Get autoforward tag id
-tagsurl = "https://habitica.com/api/v3/tags"
-req = requests.get(tagsurl, headers=headers)
-for tag in (x for x in req.json()['data'] if x['name'] == TAG):
+# Get auto-forward tag id
+req = requests.get(args.baseurl + "tags", headers=headers)
+for tag in (x for x in req.json()['data'] if x['name'] == args.tag):
     TAGID = tag['id']
 
-# Abort if autoforward tag not found
+# Abort if auto-forward tag not found
 try:
     TAGID
 except NameError:
-    # print "Autoforward tag \"{}\" not found".format(TAG)
-    quit()
+    print "Auto-forward tag '{}' not found".format(args.tag)
+    sys.exit(1)
 
 # Abort if you are resting at the inn
-userurl = "https://habitica.com/api/v3/user"
-req = requests.get(userurl, headers=headers)
+req = requests.get(args.baseurl + "user", headers=headers)
 if req.json()['data']['preferences']['sleep']:
-    # print "Resting in the Inn, autoforwarding cancelled"
-    quit()
+    print "Resting in the Inn, auto-forwarding cancelled"
+    sys.exit()
 
 days = ("su", "m", "t", "w", "th", "f", "s")
 # day of week (0..6); 0 is Sunday
@@ -72,13 +72,10 @@ daynum = int(time.strftime("%w"))
 today = days[daynum]
 yesterday = days[daynum-1]
 
-# Get dailys
-tasksurl = "https://habitica.com/api/v3/tasks/user?type=dailys"
-req = requests.get(tasksurl, headers=headers)
+req = requests.get(args.baseurl + "tasks/user?type=dailys", headers=headers)
 
 for daily in (x for x in req.json()['data'] if TAGID in x['tags']):
     if daily['repeat'][yesterday] and daily['streak'] == 0:
         daily['repeat'][today] = True
-        daily['text'] += " {}".format(TXT)
-        taskurl = "https://habitica.com/api/v3/tasks/" + daily['id']
-        task = requests.put(taskurl, headers=headers, data=json.dumps(daily))
+        daily['text'] += " {}".format(args.message)
+        task = requests.put(args.baseurl + "tasks/" + daily['id'], headers=headers, data=json.dumps(daily))

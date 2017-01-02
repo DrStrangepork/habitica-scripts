@@ -10,44 +10,39 @@ class Debug(argparse.Action):
 
 
 # MAIN
-# Set the environment variable HAB_API_USER to your User ID
-# or set it via the '-u' argument
-parser.add_argument('-u','--user-id', \
-                    help='From https://habitica.com/#/options/settings/api')
-# Set the environment variable HAB_API_TOKEN to your API token
-# or set it via the '-k' argument
-parser.add_argument('-k','--api-token', \
-                    help='From https://habitica.com/#/options/settings/api')
-parser.add_argument('--debug', \
-                    action=Debug, nargs=0, \
+parser.add_argument('-u','--user-id',
+                    help='From https://habitica.com/#/options/settings/api\n \
+                    default: environment variable HAB_API_USER')
+parser.add_argument('-k','--api-token',
+                    help='From https://habitica.com/#/options/settings/api\n \
+                    default: environment variable HAB_API_TOKEN')
+parser.add_argument('--debug',
+                    action=Debug, nargs=0,
                     help=argparse.SUPPRESS)
 args = parser.parse_args()
+args.baseurl += "/api/v3/"
 
 try:
-    if args.user_id is not None:
-        USR = args.user_id
-    else:
-        USR = os.environ['HAB_API_USER']
+    if args.user_id is None:
+        args.user_id = os.environ['HAB_API_USER']
 except KeyError:
-    print "Environment variable 'HAB_API_USER' is not set"
+    print "User ID must be set by the -u/--user-id option or by setting the environment variable 'HAB_API_USER'"
     sys.exit(1)
 
 try:
-    if args.api_token is not None:
-        KEY = args.api_token
-    else:
-        KEY = os.environ['HAB_API_TOKEN']
+    if args.api_token is None:
+        args.api_token = os.environ['HAB_API_TOKEN']
 except KeyError:
-    print "Environment variable 'HAB_API_TOKEN' is not set"
+    print "API Token must be set by the -k/--api-token option or by setting the environment variable 'HAB_API_TOKEN'"
     sys.exit(1)
 
 
-headers = {"x-api-key":KEY,"x-api-user":USR,"Content-Type":"application/json"}
+headers = {"x-api-user":args.user_id,"x-api-key":args.api_token,"Content-Type":"application/json"}
 
 today = unicode(time.strftime("%Y-%m-%d"))
 duetoday = []
 
-req = requests.get("https://habitica.com/api/v3/tasks/user?type=todos", headers=headers)
+req = requests.get(args.baseurl + "tasks/user?type=todos", headers=headers)
 
 for todo in req.json()['data']:
     # To send only today's todos to the top:    todo['date'][:10] == today:
@@ -57,8 +52,8 @@ for todo in req.json()['data']:
 
 # Push overdue todos to the top
 for todo in sorted(duetoday, key=lambda k: k['date'], reverse=True):
-    requests.post("https://habitica.com/api/v3/tasks/" + todo['id'] + "/move/to/0", headers=headers)
+    requests.post(args.baseurl + "tasks/" + todo['id'] + "/move/to/0", headers=headers)
 
 # Push today's todos to the top
 for todo in [t for t in duetoday if t['date'][:10] == today]:
-    requests.post("https://habitica.com/api/v3/tasks/" + todo['id'] + "/move/to/0", headers=headers)
+    requests.post(args.baseurl + "tasks/" + todo['id'] + "/move/to/0", headers=headers)
