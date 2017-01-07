@@ -16,6 +16,9 @@ parser.add_argument('-u','--user-id',
 parser.add_argument('-k','--api-token',
                     help='From https://habitica.com/#/options/settings/api\n \
                     default: environment variable HAB_API_TOKEN')
+parser.add_argument('--baseurl',
+                    type=str, default="https://habitica.com",
+                    help='API server (default: https://habitica.com)')
 parser.add_argument('--debug',
                     action=Debug, nargs=0,
                     help=argparse.SUPPRESS)
