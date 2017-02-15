@@ -27,6 +27,10 @@ Miscellaneous scripts for [Habitica](http://habitica.com)
     + Checks the health of all party members and casts Blessing until all members are above a given threshold (default 30hp)
 - push-todos-with-duedates-to-top.py
     + Moves active tasks with duedates to the top of the To-Dos list (excluding todos with future due dates)
+- refill-health.py
+    + Increases health points if less than given threshold
+- refill-mana.py
+    + Increases mana points if less than given threshold
 - set-global-attribute-training.py
     + Sets the training attribute on your tasks to a given attribute (str, int, con, per)
 - task-delete.sh
