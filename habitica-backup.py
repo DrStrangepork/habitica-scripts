@@ -29,7 +29,6 @@ if len(sys.argv)==1:
     parser.print_help()
     sys.exit()
 args = parser.parse_args()
-args.baseurl += "/api/v3/"
 
 try:
     if args.user_id is None:
@@ -58,7 +57,7 @@ with open(args.database, 'r') as f:
     DB = json.load(f)
 
 # Get profile
-req = requests.get(args.baseurl + "export/userdata.json", headers=headers)
+req = requests.get(args.baseurl + "/export/userdata.json", headers=headers)
 
 # Add profile
 new = {}
