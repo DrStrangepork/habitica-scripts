@@ -10,13 +10,12 @@ class Debug(argparse.Action):
 
 
 # MAIN
+parser.add_argument('-g','--group-id',
+                    type=str, default="party",
+                    help='Group ID (default: party)')
 parser.add_argument('-o','--outfile',
                     type=argparse.FileType('w'), default="group-data.json",
                     help='JSON data file (default: group-data.json)')
-parser.add_argument('-g','--group-id',
-                    type=str, default="party",
-                    help='From https://habitica.com/#/options/settings/api\n \
-                    default: "party"')
 parser.add_argument('-u','--user-id',
                     help='From https://habitica.com/#/options/settings/api\n \
                     default: environment variable HAB_API_USER')
