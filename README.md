@@ -19,6 +19,8 @@ Miscellaneous scripts for [Habitica](http://habitica.com)
     + Template for equipping a special set of armor to improve stats before casting party spells during a quest. The script is set to the ideal settings for my current avatar (lvl 69 Healer) - first, equip gear for peak CON then cast Protective Aura; second, equip gear for peak CON/INT then cast Blessing; finally, equip gear for peak STR to quest - but you can change it to what best suits your situation.
 - get-group-data.py
     + Dumps group data to a file `group-data.json` in the current directory (default group: party)
+- get-last-loggedin-timestamp.py
+    + Displays your last loggedin timestamp (when you first logged in after your Custom Day Start time)
 - get-tasks.py
     + Dumps your tasks to a file `user-tasks.json` in the current directory
 - get-user-data.py
