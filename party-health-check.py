@@ -12,19 +12,19 @@ class Debug(argparse.Action):
 
 
 # MAIN
-parser.add_argument('-p','--hp','--hitpoints',metavar='[1..49]',
+parser.add_argument('-p', '--hp', '--hitpoints',metavar='[1..49]',
                     type=int, choices=xrange(1, 50), default=30,
                     help='Minimum HP for all party members (default=30)')
-parser.add_argument('-q','--quiet',
+parser.add_argument('-q', '--quiet',
                     action='store_true', default=False,
                     help='quiet (no output)')
-parser.add_argument('-v','--verbose',
+parser.add_argument('-v', '--verbose',
                     action='store_true', default=False,
                     help='verbose output')
-parser.add_argument('-u','--user-id',
+parser.add_argument('-u', '--user-id',
                     help='From https://habitica.com/#/options/settings/api\n \
                     default: environment variable HAB_API_USER')
-parser.add_argument('-k','--api-token',
+parser.add_argument('-k', '--api-token',
                     help='From https://habitica.com/#/options/settings/api\n \
                     default: environment variable HAB_API_TOKEN')
 parser.add_argument('--baseurl',

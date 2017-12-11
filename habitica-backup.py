@@ -10,13 +10,13 @@ class Debug(argparse.Action):
 
 
 # MAIN
-parser.add_argument('-d','--database',
+parser.add_argument('-d', '--database',
                     required=True,
                     help='Path to json db file')
-parser.add_argument('-u','--user-id',
+parser.add_argument('-u', '--user-id',
                     help='From https://habitica.com/#/options/settings/api\n \
                     default: environment variable HAB_API_USER')
-parser.add_argument('-k','--api-token',
+parser.add_argument('-k', '--api-token',
                     help='From https://habitica.com/#/options/settings/api\n \
                     default: environment variable HAB_API_TOKEN')
 parser.add_argument('--baseurl',

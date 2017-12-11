@@ -11,16 +11,16 @@ class Debug(argparse.Action):
 
 
 # MAIN
-parser.add_argument('-p','--mp','--manapoints',
+parser.add_argument('-p', '--mp', '--manapoints',
                     type=int, default=30,
                     help='Minimum MP (default=30)')
-parser.add_argument('-m','--multiplier',
+parser.add_argument('-m', '--multiplier',
                     type=int, default=5,
                     help='Multiplier (default=5)')
-parser.add_argument('-u','--user-id',
+parser.add_argument('-u', '--user-id',
                     help='From https://habitica.com/#/options/settings/api\n \
                     default: environment variable HAB_API_USER')
-parser.add_argument('-k','--api-token',
+parser.add_argument('-k', '--api-token',
                     help='From https://habitica.com/#/options/settings/api\n \
                     default: environment variable HAB_API_TOKEN')
 parser.add_argument('--baseurl',

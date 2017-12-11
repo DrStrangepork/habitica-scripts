@@ -19,17 +19,17 @@ def unequip(gear):
 
 
 # MAIN
-parser.add_argument('-c','--cast',
+parser.add_argument('-c', '--cast',
                     required=True,
                     choices=['all','both','none','blessing','healAll','protect','protectAura','protectiveaura'],
                     help='Spell(s) to cast')
-parser.add_argument('-b','--bossquest',
+parser.add_argument('-b', '--bossquest',
                     action='store_true',
                     help='Equip a special equipment set for fighting bosses')
-parser.add_argument('-u','--user-id',
+parser.add_argument('-u', '--user-id',
                     help='From https://habitica.com/#/options/settings/api\n \
                     default: environment variable HAB_API_USER')
-parser.add_argument('-k','--api-token',
+parser.add_argument('-k', '--api-token',
                     help='From https://habitica.com/#/options/settings/api\n \
                     default: environment variable HAB_API_TOKEN')
 parser.add_argument('--baseurl',
