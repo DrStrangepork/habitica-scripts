@@ -25,6 +25,8 @@ Miscellaneous scripts for [Habitica](http://habitica.com)
     + Dumps your tasks to a file `user-tasks.json` in the current directory
 - get-user-data.py
     + Dumps your user data to a file `user-data.json` in the current directory
+- go-to-sleep.py
+    + Go to sleep at the Inn
 - habitica-backup.py
     + Backs up the JSON data export for offline storage
 - party-health-check.sh
