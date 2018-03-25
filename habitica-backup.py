@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 
 import argparse, json, os, requests, sys, time
 parser = argparse.ArgumentParser(description="Backs up the JSON data export for offline storage")

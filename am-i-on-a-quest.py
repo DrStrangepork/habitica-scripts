@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 
 import argparse, os, requests, sys
 parser = argparse.ArgumentParser(description="Are you on a quest with your party? Returns \"Yes\" or \"No\"")

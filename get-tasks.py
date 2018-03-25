@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 
 import argparse, json, os, requests, sys
 parser = argparse.ArgumentParser(description="Dumps your tasks to a file user-tasks.json in the current directory")

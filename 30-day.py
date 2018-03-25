@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 
 import argparse, json, os, requests, sys, time
 from operator import itemgetter

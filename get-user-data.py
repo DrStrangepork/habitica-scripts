@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 
 import argparse, json, os, requests, sys
 parser = argparse.ArgumentParser(description="Dumps your user data to a file user-data.json in the current directory")

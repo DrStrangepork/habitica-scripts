@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 
 import argparse, json, os, requests, sys
 parser = argparse.ArgumentParser(description="Displays your last loggedin timestamp")
