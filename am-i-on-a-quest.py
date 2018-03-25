@@ -29,7 +29,7 @@ parser.add_argument('--debug',
                     action=Debug, nargs=0,
                     help=argparse.SUPPRESS)
 args = parser.parse_args()
-args.baseurl += "/api/v3/"
+args.baseurl += "/api/v3/groups/party"
 
 try:
     if args.user_id is None:
@@ -48,8 +48,8 @@ except KeyError:
 
 headers = {"x-api-user":args.user_id,"x-api-key":args.api_token,"Content-Type":"application/json"}
 
-req = requests.get(args.baseurl + "user", headers=headers)
-if req.json()['data']['party']['quest']['key']:
+req = requests.get(args.baseurl, headers=headers)
+if req.json()['data']['quest']['active']:
     if args.error_code:
         sys.exit(0)
     else:
