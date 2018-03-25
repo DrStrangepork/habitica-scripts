@@ -1,8 +1,10 @@
 #!/usr/bin/env python2
 
-import argparse, json, os, requests, sys
-parser = argparse.ArgumentParser(description="Set the training attribute on your tasks",
-            epilog="For more info on attribute training, see http://habitica.wikia.com/wiki/Automatic_Allocation")
+import argparse
+import json
+import os
+import requests
+import sys
 
 
 class Debug(argparse.Action):
@@ -11,6 +13,8 @@ class Debug(argparse.Action):
 
 
 # MAIN
+parser = argparse.ArgumentParser(description="Set the training attribute on your tasks",
+            epilog="For more info on attribute training, see http://habitica.wikia.com/wiki/Automatic_Allocation")
 parser.add_argument('-a', '--attribute',
                     required=True,
                     choices=['str','int','con','per'],

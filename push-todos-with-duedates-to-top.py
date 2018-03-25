@@ -1,7 +1,9 @@
 #!/usr/bin/env python2
 
-import argparse, os, requests, time
-parser = argparse.ArgumentParser(description="Moves active tasks with duedates to the top of the To-Dos list (excluding todos with future due dates)")
+import argparse
+import os
+import requests
+import time
 
 
 class Debug(argparse.Action):
@@ -10,6 +12,7 @@ class Debug(argparse.Action):
 
 
 # MAIN
+parser = argparse.ArgumentParser(description="Moves active tasks with duedates to the top of the To-Dos list (excluding todos with future due dates)")
 parser.add_argument('-u', '--user-id',
                     help='From https://habitica.com/#/options/settings/api\n \
                     default: environment variable HAB_API_USER')

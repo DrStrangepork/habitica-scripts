@@ -1,7 +1,11 @@
 #!/usr/bin/env python2
 
-import argparse, json, os, requests, sys, time
-parser = argparse.ArgumentParser(description="Backs up the JSON data export for offline storage")
+import argparse
+import json
+import os
+import requests
+import sys
+import time
 
 
 class Debug(argparse.Action):
@@ -10,6 +14,7 @@ class Debug(argparse.Action):
 
 
 # MAIN
+parser = argparse.ArgumentParser(description="Backs up the JSON data export for offline storage")
 parser.add_argument('-d', '--database',
                     required=True,
                     help='Path to json db file')

@@ -1,7 +1,10 @@
 #!/usr/bin/env python2
 
-import argparse, json, os, requests, sys
-parser = argparse.ArgumentParser(description="Displays your last loggedin timestamp")
+import argparse
+import json
+import os
+import requests
+import sys
 
 
 class Debug(argparse.Action):
@@ -10,6 +13,7 @@ class Debug(argparse.Action):
 
 
 # MAIN
+parser = argparse.ArgumentParser(description="Displays your last loggedin timestamp")
 parser.add_argument('-u', '--user-id',
                     help='From https://habitica.com/#/options/settings/api\n \
                     default: environment variable HAB_API_USER')

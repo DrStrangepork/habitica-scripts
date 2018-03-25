@@ -1,7 +1,10 @@
 #!/usr/bin/env python2
 
-import argparse, json, os, requests, sys
-parser = argparse.ArgumentParser(description="Dumps your tasks to a file user-tasks.json in the current directory")
+import argparse
+import json
+import os
+import requests
+import sys
 
 
 class Debug(argparse.Action):
@@ -10,6 +13,7 @@ class Debug(argparse.Action):
 
 
 # MAIN
+parser = argparse.ArgumentParser(description="Dumps your tasks to a file user-tasks.json in the current directory")
 parser.add_argument('-o', '--outfile',
                     type=argparse.FileType('w'), default="user-tasks.json",
                     help='JSON data file (default: user-tasks.json)')

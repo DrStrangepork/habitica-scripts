@@ -1,8 +1,12 @@
 #!/usr/bin/env python2
 
-import argparse, json, os, requests, sys, time
+import argparse
+import json
+import os
+import requests
+import sys
+import time
 from operator import itemgetter
-parser = argparse.ArgumentParser(description="A 30-day escalating ab/squat exercise routine")
 
 
 class Debug(argparse.Action):
@@ -11,6 +15,7 @@ class Debug(argparse.Action):
 
 
 # MAIN
+parser = argparse.ArgumentParser(description="A 30-day escalating ab/squat exercise routine")
 parser.add_argument('-u', '--user-id',
                     help='From https://habitica.com/#/options/settings/api\n \
                     default: environment variable HAB_API_USER')

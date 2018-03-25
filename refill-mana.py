@@ -1,8 +1,10 @@
 #!/usr/bin/env python2
 
-import argparse, json, os, requests, sys
-parser = argparse.ArgumentParser(\
-                description="Increases mana points if less than given threshold")
+import argparse
+import json
+import os
+import requests
+import sys
 
 
 class Debug(argparse.Action):
@@ -11,6 +13,8 @@ class Debug(argparse.Action):
 
 
 # MAIN
+parser = argparse.ArgumentParser(\
+                description="Increases mana points if less than given threshold")
 parser.add_argument('-p', '--mp', '--manapoints',
                     type=int, default=30,
                     help='Minimum MP (default=30)')

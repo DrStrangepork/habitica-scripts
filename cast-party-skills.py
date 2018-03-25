@@ -6,16 +6,14 @@ import requests
 import sys
 
 
-parser = argparse.ArgumentParser(description="Cast party skills",
-            epilog="See https://habitica.com/apidoc/#api-User-UserCast for the key map of class skills")
-
-
 class Debug(argparse.Action):
     def __call__(self, parser, namespace, values, option_string=None):
         import pdb; pdb.set_trace()
 
 
 # MAIN
+parser = argparse.ArgumentParser(description="Cast party skills",
+            epilog="See https://habitica.com/apidoc/#api-User-UserCast for the key map of class skills")
 parser.add_argument('-c', '--cast',
                     required=True,
                     choices=['all','both',

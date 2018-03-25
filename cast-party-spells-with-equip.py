@@ -1,9 +1,9 @@
 #!/usr/bin/env python2
 
-import argparse, os, requests, sys
-parser = argparse.ArgumentParser(description="Template for equipping a special set of armor \
-                                 to improve stats before casting party spells during a quest",
-            epilog="See https://habitica.com/apidoc/#api-User-UserCast for the key map of class spells")
+import argparse
+import os
+import requests
+import sys
 
 
 class Debug(argparse.Action):
@@ -19,6 +19,9 @@ def unequip(gear):
 
 
 # MAIN
+parser = argparse.ArgumentParser(description="Template for equipping a special set of armor \
+                                 to improve stats before casting party spells during a quest",
+            epilog="See https://habitica.com/apidoc/#api-User-UserCast for the key map of class spells")
 parser.add_argument('-c', '--cast',
                     required=True,
                     choices=['all','both','none','blessing','healAll','protect','protectAura','protectiveaura'],

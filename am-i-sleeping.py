@@ -1,7 +1,9 @@
 #!/usr/bin/env python2
 
-import argparse, os, requests, sys
-parser = argparse.ArgumentParser(description="Are you sleeping at the Inn? Returns \"Yes\" or \"No\"")
+import argparse
+import os
+import requests
+import sys
 
 
 class Debug(argparse.Action):
@@ -10,6 +12,7 @@ class Debug(argparse.Action):
 
 
 # MAIN
+parser = argparse.ArgumentParser(description="Are you sleeping at the Inn? Returns \"Yes\" or \"No\"")
 parser.add_argument('-e', '--error-code',
                     action='store_true',
                     help='Returns 0 or 1 rather than "Yes" of "No"')

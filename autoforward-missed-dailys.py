@@ -1,7 +1,11 @@
 #!/usr/bin/env python2
 
-import argparse, json, os, requests, sys, time
-parser = argparse.ArgumentParser(description="Add missed dailys to the current day's dailys")
+import argparse
+import json
+import os
+import requests
+import sys
+import time
 
 
 class Debug(argparse.Action):
@@ -10,6 +14,7 @@ class Debug(argparse.Action):
 
 
 # MAIN
+parser = argparse.ArgumentParser(description="Add missed dailys to the current day's dailys")
 parser.add_argument('-t', '--tag',
                     type=str, default="auto-forward",
                     help='Auto-forward tag')

@@ -1,7 +1,9 @@
 #!/usr/bin/env python2
 
-import argparse, os, requests, sys
-parser = argparse.ArgumentParser(description="Go to sleep at the Inn")
+import argparse
+import os
+import requests
+import sys
 
 
 class Debug(argparse.Action):
@@ -10,6 +12,7 @@ class Debug(argparse.Action):
 
 
 # MAIN
+parser = argparse.ArgumentParser(description="Go to sleep at the Inn")
 parser.add_argument('-u', '--user-id',
                     help='From https://habitica.com/#/options/settings/api\n \
                     default: environment variable HAB_API_USER')

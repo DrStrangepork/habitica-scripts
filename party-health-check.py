@@ -1,9 +1,9 @@
 #!/usr/bin/env python2
 
-import argparse, os, requests, sys
-parser = argparse.ArgumentParser(\
-                description="Checks the health of all party members and casts \
-                Blessing until all members are above a given threshold")
+import argparse
+import os
+import requests
+import sys
 
 
 class Debug(argparse.Action):
@@ -12,6 +12,9 @@ class Debug(argparse.Action):
 
 
 # MAIN
+parser = argparse.ArgumentParser(\
+                description="Checks the health of all party members and casts \
+                Blessing until all members are above a given threshold")
 parser.add_argument('-p', '--hp', '--hitpoints',metavar='[1..49]',
                     type=int, choices=xrange(1, 50), default=30,
                     help='Minimum HP for all party members (default=30)')
