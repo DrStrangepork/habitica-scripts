@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 
 import argparse
 import os
@@ -15,16 +15,16 @@ def unequip(gear):
     for k, v in gear.items():
         # If item ~ "base_0", you are already unequipped, so skip
         if "base_0" not in v:
-            req = requests.post(args.baseurl + "user/equip/equipped/{}".format(v), headers=headers)
+            requests.post(args.baseurl + "user/equip/equipped/{}".format(v), headers=headers)
 
 
 # MAIN
 parser = argparse.ArgumentParser(description="Template for equipping a special set of armor \
                                  to improve stats before casting party spells during a quest",
-            epilog="See https://habitica.com/apidoc/#api-User-UserCast for the key map of class spells")
+                                 epilog="See https://habitica.com/apidoc/#api-User-UserCast for the key map of class spells")
 parser.add_argument('-c', '--cast',
                     required=True,
-                    choices=['all','both','none','blessing','healAll','protect','protectAura','protectiveaura'],
+                    choices=['all', 'both', 'none', 'blessing', 'healAll', 'protect', 'protectAura', 'protectiveaura'],
                     help='Spell(s) to cast')
 parser.add_argument('-b', '--bossquest',
                     action='store_true',
@@ -41,7 +41,7 @@ parser.add_argument('--baseurl',
 parser.add_argument('--debug',
                     action=Debug, nargs=0,
                     help=argparse.SUPPRESS)
-if len(sys.argv)==1:
+if len(sys.argv) == 1:
     parser.print_help()
     sys.exit()
 args = parser.parse_args()
@@ -51,18 +51,18 @@ try:
     if args.user_id is None:
         args.user_id = os.environ['HAB_API_USER']
 except KeyError:
-    print "User ID must be set by the -u/--user-id option or by setting the environment variable 'HAB_API_USER'"
+    print("User ID must be set by the -u/--user-id option or by setting the environment variable 'HAB_API_USER'")
     sys.exit(1)
 
 try:
     if args.api_token is None:
         args.api_token = os.environ['HAB_API_TOKEN']
 except KeyError:
-    print "API Token must be set by the -k/--api-token option or by setting the environment variable 'HAB_API_TOKEN'"
+    print("API Token must be set by the -k/--api-token option or by setting the environment variable 'HAB_API_TOKEN'")
     sys.exit(1)
 
 
-headers = {"x-api-user":args.user_id,"x-api-key":args.api_token,"Content-Type":"application/json"}
+headers = {"x-api-user": args.user_id, "x-api-key": args.api_token, "Content-Type": "application/json"}
 
 # Max out Constitution
 aura = {
@@ -103,14 +103,14 @@ req = requests.get(args.baseurl + "user", headers=headers)
 unequip(req.json()['data']['items']['gear']['equipped'])
 
 # Protective Aura
-if args.cast in ("all","both","protect","protectAura","protectiveaura"):
+if args.cast in ("all", "both", "protect", "protectAura", "protectiveaura"):
     for k, v in aura.items():
         req = requests.post(args.baseurl + "user/equip/equipped/{}".format(v), headers=headers)
     spell = requests.post(args.baseurl + "user/class/cast/protectAura", headers=headers)
     unequip(req.json()['data']['gear']['equipped'])
 
 # Blessing
-if args.cast in ("all","both","blessing","healAll"):
+if args.cast in ("all", "both", "blessing", "healAll"):
     for k, v in blessing.items():
         req = requests.post(args.baseurl + "user/equip/equipped/{}".format(v), headers=headers)
     spell = requests.post(args.baseurl + "user/class/cast/healAll", headers=headers)

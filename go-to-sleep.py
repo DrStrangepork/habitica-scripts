@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 
 import argparse
 import os
@@ -32,22 +32,22 @@ try:
     if args.user_id is None:
         args.user_id = os.environ['HAB_API_USER']
 except KeyError:
-    print "User ID must be set by the -u/--user-id option or by setting the environment variable 'HAB_API_USER'"
+    print("User ID must be set by the -u/--user-id option or by setting the environment variable 'HAB_API_USER'")
     sys.exit(1)
 
 try:
     if args.api_token is None:
         args.api_token = os.environ['HAB_API_TOKEN']
 except KeyError:
-    print "API Token must be set by the -k/--api-token option or by setting the environment variable 'HAB_API_TOKEN'"
+    print("API Token must be set by the -k/--api-token option or by setting the environment variable 'HAB_API_TOKEN'")
     sys.exit(1)
 
 
-headers = {"x-api-user":args.user_id,"x-api-key":args.api_token,"Content-Type":"application/json"}
+headers = {"x-api-user": args.user_id, "x-api-key": args.api_token, "Content-Type": "application/json"}
 
 req = requests.get(args.baseurl + "user", headers=headers)
 if req.json()['data']['preferences']['sleep']:
-    print "Already sleeping"
+    print("Already sleeping")
 else:
     req = requests.post(args.baseurl + "user/sleep", headers=headers)
-    print "Now slepping at the Inn"
+    print("Now slepping at the Inn")

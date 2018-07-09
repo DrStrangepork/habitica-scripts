@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 
 party_damage_done = 0
 chat_index = 0
@@ -124,4 +124,4 @@ if party[data][quest][active]:
             party_damage_done += attack.damage
         chat_index++
 
-# "attacks": {"Member1": "10","Member2": "1"}
+# "attacks": {"Member1": "10", "Member2": "1"}

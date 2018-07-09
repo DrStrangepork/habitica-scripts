@@ -1,9 +1,10 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 
 import argparse
 import os
 import requests
 import sys
+from six.moves import range
 
 
 class Debug(argparse.Action):
@@ -12,11 +13,9 @@ class Debug(argparse.Action):
 
 
 # MAIN
-parser = argparse.ArgumentParser(\
-                description="Checks the health of all party members and casts \
-                Blessing until all members are above a given threshold")
-parser.add_argument('-p', '--hp', '--hitpoints',metavar='[1..49]',
-                    type=int, choices=xrange(1, 50), default=30,
+parser = argparse.ArgumentParser(description="Checks the health of all party members and casts Blessing until all members are above a given threshold")
+parser.add_argument('-p', '--hp', '--hitpoints', metavar='[1..49]',
+                    type=int, choices=range(1, 50), default=30,
                     help='Minimum HP for all party members (default=30)')
 parser.add_argument('-q', '--quiet',
                     action='store_true', default=False,
@@ -43,19 +42,17 @@ try:
     if args.user_id is None:
         args.user_id = os.environ['HAB_API_USER']
 except KeyError:
-    print "User ID must be set by the -u/--user-id option or by setting the environment variable 'HAB_API_USER'"
+    print("User ID must be set by the -u/--user-id option or by setting the environment variable 'HAB_API_USER'")
     sys.exit(1)
 
 try:
     if args.api_token is None:
         args.api_token = os.environ['HAB_API_TOKEN']
 except KeyError:
-    print "API Token must be set by the -k/--api-token option or by setting the environment variable 'HAB_API_TOKEN'"
+    print("API Token must be set by the -k/--api-token option or by setting the environment variable 'HAB_API_TOKEN'")
     sys.exit(1)
 
-
-
-headers = {"x-api-user":args.user_id,"x-api-key":args.api_token,"Content-Type":"application/json"}
+headers = {"x-api-user": args.user_id, "x-api-key": args.api_token, "Content-Type": "application/json"}
 
 req = requests.get(args.baseurl + "groups/party/members", headers=headers)
 
@@ -63,11 +60,11 @@ for member in req.json()['data']:
     mem_req = requests.get(args.baseurl + "members/" + member['id'], headers=headers)
     if args.verbose or (not args.quiet and mem_req.json()['data']['stats']['hp'] < args.hp):
         try:
-            print "{}: {}".format(member['profile']['name'], mem_req.json()['data']['stats']['hp'])
+            print("{}: {}".format(member['profile']['name'], mem_req.json()['data']['stats']['hp']))
         except UnicodeEncodeError:
-            print "{}: {}".format(member['id'], mem_req.json()['data']['stats']['hp'])
+            print("{}: {}".format(member['id'], mem_req.json()['data']['stats']['hp']))
     while mem_req.json()['data']['stats']['hp'] < args.hp:
         os.system("cast-party-spells.py -c blessing -u " + args.user_id + " -k " + args.api_token)
         mem_req = requests.get(args.baseurl + "members/" + member['id'], headers=headers)
         if not args.quiet:
-            print "{}: {}".format(member['profile']['name'], mem_req.json()['data']['stats']['hp'])
+            print("{}: {}".format(member['profile']['name'], mem_req.json()['data']['stats']['hp']))

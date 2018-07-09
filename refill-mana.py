@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 
 import argparse
 import json
@@ -13,8 +13,7 @@ class Debug(argparse.Action):
 
 
 # MAIN
-parser = argparse.ArgumentParser(\
-                description="Increases mana points if less than given threshold")
+parser = argparse.ArgumentParser(description="Increases mana points if less than given threshold")
 parser.add_argument('-p', '--mp', '--manapoints',
                     type=int, default=30,
                     help='Minimum MP (default=30)')
@@ -37,26 +36,24 @@ args = parser.parse_args()
 args.baseurl += "/api/v3/user"
 
 if args.mp <= 0 or args.multiplier <= 0:
-    print "Value must be a positive number"
+    print("Value must be a positive number")
     sys.exit(1)
 
 try:
     if args.user_id is None:
         args.user_id = os.environ['HAB_API_USER']
 except KeyError:
-    print "User ID must be set by the -u/--user-id option or by setting the environment variable 'HAB_API_USER'"
+    print("User ID must be set by the -u/--user-id option or by setting the environment variable 'HAB_API_USER'")
     sys.exit(1)
 
 try:
     if args.api_token is None:
         args.api_token = os.environ['HAB_API_TOKEN']
 except KeyError:
-    print "API Token must be set by the -k/--api-token option or by setting the environment variable 'HAB_API_TOKEN'"
+    print("API Token must be set by the -k/--api-token option or by setting the environment variable 'HAB_API_TOKEN'")
     sys.exit(1)
 
-
-
-headers = {"x-api-user":args.user_id,"x-api-key":args.api_token,"Content-Type":"application/json"}
+headers = {"x-api-user": args.user_id, "x-api-key": args.api_token, "Content-Type": "application/json"}
 
 req = requests.get(args.baseurl, headers=headers)
 
