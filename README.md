@@ -33,7 +33,7 @@ Miscellaneous scripts for [Habitica](http://habitica.com)
   - Go to sleep at the Inn
 - habitica-backup.py
   - Backs up the JSON data export for offline storage
-- party-health-check.sh
+- party-health-check.py
   - Checks the health of all party members and casts Blessing until all members are above a given threshold (default 30hp)
 - push-todos-with-duedates-to-top.py
   - Moves active tasks with duedates to the top of the To-Dos list (excluding todos with future due dates)

@@ -19,6 +19,6 @@ script:
   - tests/get-tasks.sh
   - tests/get-user-data.sh
   - tests/habitica-backup.sh
-  - tests/party-health-check.sh
+  - tests/party-health-check.py
   - tests/push-todos-with-duedates-to-top.sh
   - tests/set-global-attribute-training.sh

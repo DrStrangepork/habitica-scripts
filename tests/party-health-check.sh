@@ -1,6 +1,6 @@
 #!/bin/bash
 
-./party-health-check.sh -h
+./party-health-check.py -h
 
 # is user a healer?
 
