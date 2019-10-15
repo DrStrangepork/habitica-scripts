@@ -36,7 +36,7 @@ Miscellaneous scripts for [Habitica](http://habitica.com)
 - party-health-check.py
   - Checks the health of all party members and casts Blessing until all members are above a given threshold (default 30hp)
 - push-todos-with-duedates-to-top.py
-  - Moves active tasks with duedates to the top of the To-Dos list (excluding todos with future due dates)
+  - Moves active tasks with duedates to the top of the To-Dos list in order of duedate
 - refill-health.py
   - Increases health points if less than given threshold
 - refill-mana.py
@@ -62,7 +62,7 @@ These scripts access your Habitica account via the [Habitica API](https://habiti
 
 - To delete all unfinished todo's within a 30-day challenge:
 
-```
+```bash
 for id in $(curl -H "x-api-key: $HAB_API_TOKEN" -H "x-api-user: $HAB_API_USER" -H "Content-Type:application/json" https://habitica.com/api/v3/tasks/user | \
     jq -r '.[] | select(.type == "todo") | select(.text | startswith("30-Day Ab/Squat Challenge")) | select(.completed == false) | .id' | \
     sed 's/\\r//g'); do
