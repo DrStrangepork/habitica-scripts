@@ -10,11 +10,13 @@ import sys
 
 class Debug(argparse.Action):
     def __call__(self, parser, namespace, values, option_string=None):
-        import pdb; pdb.set_trace()
+        import pdb
+        pdb.set_trace()
 
 
 # MAIN
-parser = argparse.ArgumentParser(description="Moves active tasks with duedates to the top of the To-Dos list (excluding todos with future due dates)")
+parser = argparse.ArgumentParser(
+    description="Moves active tasks with duedates to the top of the To-Dos list (excluding todos with future due dates)")
 parser.add_argument('-u', '--user-id',
                     help='From https://habitica.com/#/options/settings/api\n \
                     default: environment variable HAB_API_USER')
@@ -45,7 +47,8 @@ except KeyError:
     sys.exit(1)
 
 
-headers = {"x-api-user": args.user_id, "x-api-key": args.api_token, "Content-Type": "application/json"}
+headers = {"x-api-user": args.user_id, "x-api-key": args.api_token,
+           "Content-Type": "application/json"}
 
 today = six.text_type(time.strftime("%Y-%m-%d"))
 duetoday = []
@@ -60,8 +63,10 @@ for todo in req.json()['data']:
 
 # Push overdue todos to the top
 for todo in sorted(duetoday, key=lambda k: k['date'], reverse=True):
-    requests.post(args.baseurl + "tasks/" + todo['id'] + "/move/to/0", headers=headers)
+    requests.post(args.baseurl + "tasks/" +
+                  todo['id'] + "/move/to/0", headers=headers)
 
 # Push today's todos to the top
 for todo in [t for t in duetoday if t['date'][:10] == today]:
-    requests.post(args.baseurl + "tasks/" + todo['id'] + "/move/to/0", headers=headers)
+    requests.post(args.baseurl + "tasks/" +
+                  todo['id'] + "/move/to/0", headers=headers)
