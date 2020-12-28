@@ -21,6 +21,8 @@ Miscellaneous scripts for [Habitica](http://habitica.com)
   - Cast party skills (supercedes former cast-party-spells.py script)
 - cast-party-spells-with-equip.py (formerly cast-party-spells.py)
   - Template for equipping a special set of armor to improve stats before casting party spells during a quest. The script is set to the ideal settings for my current avatar (lvl 69 Healer) - first, equip gear for peak CON then cast Protective Aura; second, equip gear for peak CON/INT then cast Blessing; finally, equip gear for peak STR to quest - but you can change it to what best suits your situation.
+- feed-pets.py
+  - Feed hungry pets with all available food items
 - get-group-data.py
   - Dumps group data to a file `group-data.json` in the current directory (default group: party)
 - get-last-loggedin-timestamp.py
