@@ -32,6 +32,8 @@ def feed_pets(items, pets, food, url, headers):
                 p.raise_for_status()
                 # If no errors, then food was consumed
                 items['food'][food] -= 1
+                # Avoid TooManyRequests/rate limit errors
+                time.sleep(2)
                 if p.json()['data'] > 0:
                     print('%s (%d%%)' % (p.json()['message'], p.json()['data']/50*100))
                 else:
