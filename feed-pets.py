@@ -12,19 +12,22 @@ class Debug(argparse.Action):
         import pdb; pdb.set_trace()
 
 
-def collect_pets(items, filter):
+def collect_pets(items, food_type):
     pets_to_feed = {}
     for name,value in items['pets'].items():
         # Skip feeding pets of mounts
         if name in items['mounts']:
             continue
-        if filter in name:
+        if food_type in name:
             pets_to_feed[name] = value
     # pets_to_feed_sorted = dict(sorted(pets_to_feed.items(), key=lambda item: item[1], reverse=True))
     return dict(sorted(pets_to_feed.items(), key=lambda item: item[1], reverse=True))
 
 
 def feed_pets(items, pets, food, url, headers):
+    if not pets.keys():
+        print('No pets want to eat %s' % food)
+        return
     for pet in pets.keys():
         while (items['food'][food] > 0):
             try:
