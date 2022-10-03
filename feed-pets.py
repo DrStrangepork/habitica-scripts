@@ -2,9 +2,9 @@
 
 import argparse
 import os
-import requests
 import sys
 import time
+import requests
 
 
 class Debug(argparse.Action):
@@ -14,7 +14,7 @@ class Debug(argparse.Action):
 
 def collect_pets(items, food_type):
     pets_to_feed = {}
-    for name,value in items['pets'].items():
+    for name, value in items['pets'].items():
         # Skip feeding pets of mounts
         if name in items['mounts']:
             continue
@@ -26,29 +26,29 @@ def collect_pets(items, food_type):
 
 def feed_pets(items, pets, food, url, headers):
     if not pets.keys():
-        print('No pets want to eat %s' % food)
+        print(f'No pets want to eat {food}')
         return
     for pet in pets.keys():
-        while (items['food'][food] > 0):
+        while items['food'][food] > 0:
             try:
-                p = requests.post("%suser/feed/%s/%s" % (url, pet, food), headers=headers)
-                p.raise_for_status()
+                feed_food = requests.post(f'{url}user/feed/{pet}/{food}', headers=headers)
+                feed_food.raise_for_status()
                 # If no errors, then food was consumed
                 items['food'][food] -= 1
                 # Avoid TooManyRequests/rate limit errors
                 time.sleep(2)
-                if p.json()['data'] > 0:
-                    print('%s (%d%%)' % (p.json()['message'], p.json()['data']/50*100))
+                if feed_food.json()['data'] > 0:
+                    print(f"{feed_food.json()['message']} ({feed_food.json()['data'] / 50 * 100})")
                 else:
-                    print('%s' % p.json()['message'])
+                    print(f"{feed_food.json()['message']}")
                     items['mounts'][pet] = True
                     break
             except requests.exceptions.RequestException:
-                if 'TooManyRequests' in p.json():
+                if 'TooManyRequests' in feed_food.json():
                     print('Sleeping for 60s due to rate limiting restrictions')
                     time.sleep(60)
                 else:
-                    print(p.json())
+                    print(feed_food.json())
                     sys.exit(1)
 
 

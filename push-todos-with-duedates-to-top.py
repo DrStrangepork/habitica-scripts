@@ -2,10 +2,10 @@
 
 import argparse
 import os
-import requests
 import time
-import six
 import sys
+import requests
+import six
 
 
 class Debug(argparse.Action):

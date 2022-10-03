@@ -3,9 +3,9 @@
 import argparse
 import json
 import os
-import requests
 import sys
 import time
+import requests
 
 
 class Debug(argparse.Action):
@@ -55,15 +55,11 @@ headers = {"x-api-user": args.user_id, "x-api-key": args.api_token, "Content-Typ
 
 # Get auto-forward tag id
 req = requests.get(args.baseurl + "tags", headers=headers)
-for tag in (x for x in req.json()['data'] if x['name'] == args.tag):
-    TAGID = tag['id']
-
-# Abort if auto-forward tag not found
-try:
-    TAGID
-except NameError:
-    print("Auto-forward tag '{}' not found".format(args.tag))
+tag = [x for x in req.json()['data'] if x.get('name', None) == args.tag]
+if not tag:
+    print(f"Auto-forward tag '{args.tag}' not found")
     sys.exit(1)
+tag_id = tag['id']
 
 # Abort if you are resting at the inn
 req = requests.get(args.baseurl + "user", headers=headers)
@@ -79,8 +75,8 @@ yesterday = days[daynum - 1]
 
 req = requests.get(args.baseurl + "tasks/user?type=dailys", headers=headers)
 
-for daily in (x for x in req.json()['data'] if TAGID in x['tags']):
+for daily in (x for x in req.json()['data'] if tag_id in x['tags']):
     if daily['repeat'][yesterday] and daily['streak'] == 0:
         daily['repeat'][today] = True
-        daily['text'] += " {}".format(args.message)
+        daily['text'] += f' {args.message}'
         task = requests.put(args.baseurl + "tasks/" + daily['id'], headers=headers, data=json.dumps(daily))

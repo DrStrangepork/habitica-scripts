@@ -2,8 +2,8 @@
 
 import argparse
 import os
-import requests
 import sys
+import requests
 
 
 class Debug(argparse.Action):
@@ -15,7 +15,7 @@ def unequip(gear):
     for k, v in gear.items():
         # If item ~ "base_0", you are already unequipped, so skip
         if "base_0" not in v:
-            requests.post(args.baseurl + "user/equip/equipped/{}".format(v), headers=headers)
+            requests.post(args.baseurl + f'user/equip/equipped/{v}', headers=headers)
 
 
 # MAIN
@@ -105,17 +105,17 @@ unequip(req.json()['data']['items']['gear']['equipped'])
 # Protective Aura
 if args.cast in ("all", "both", "protect", "protectAura", "protectiveaura"):
     for k, v in aura.items():
-        req = requests.post(args.baseurl + "user/equip/equipped/{}".format(v), headers=headers)
+        req = requests.post(args.baseurl + f'user/equip/equipped/{v}', headers=headers)
     spell = requests.post(args.baseurl + "user/class/cast/protectAura", headers=headers)
     unequip(req.json()['data']['gear']['equipped'])
 
 # Blessing
 if args.cast in ("all", "both", "blessing", "healAll"):
     for k, v in blessing.items():
-        req = requests.post(args.baseurl + "user/equip/equipped/{}".format(v), headers=headers)
+        req = requests.post(args.baseurl + f'user/equip/equipped/{v}', headers=headers)
     spell = requests.post(args.baseurl + "user/class/cast/healAll", headers=headers)
     unequip(req.json()['data']['gear']['equipped'])
 
 # Equip for quest
 for k, v in quest.items():
-    req = requests.post(args.baseurl + "user/equip/equipped/{}".format(v), headers=headers)
+    req = requests.post(args.baseurl + f'user/equip/equipped/{v}', headers=headers)

@@ -2,8 +2,8 @@
 
 import argparse
 import os
-import requests
 import sys
+import requests
 from six.moves import range
 
 
@@ -60,11 +60,11 @@ for member in req.json()['data']:
     mem_req = requests.get(args.baseurl + "members/" + member['id'], headers=headers)
     if args.verbose or (not args.quiet and mem_req.json()['data']['stats']['hp'] < args.hp):
         try:
-            print("{}: {}".format(member['profile']['name'], mem_req.json()['data']['stats']['hp']))
+            print(f"{member['profile']['name']}: {mem_req.json()['data']['stats']['hp']}")
         except UnicodeEncodeError:
-            print("{}: {}".format(member['id'], mem_req.json()['data']['stats']['hp']))
+            print(f"{member['id']}: {mem_req.json()['data']['stats']['hp']}")
     while mem_req.json()['data']['stats']['hp'] < args.hp:
         os.system("cast-party-spells.py -c blessing -u " + args.user_id + " -k " + args.api_token)
         mem_req = requests.get(args.baseurl + "members/" + member['id'], headers=headers)
         if not args.quiet:
-            print("{}: {}".format(member['profile']['name'], mem_req.json()['data']['stats']['hp']))
+            print(f"{member['profile']['name']}: {mem_req.json()['data']['stats']['hp']}")

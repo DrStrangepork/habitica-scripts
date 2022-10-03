@@ -3,9 +3,9 @@
 import argparse
 import json
 import os
-import requests
 import sys
 import time
+import requests
 import six
 
 
@@ -56,10 +56,9 @@ now = six.text_type(time.strftime("%Y-%m-%dT%H:%M:%S%z"))
 
 # Load DB
 if not os.path.isfile(args.database):
-    with open(args.database, 'w') as f:
+    with open(args.database, 'w', encoding='utf-8') as f:
         f.write("[]")
-    f.close
-with open(args.database, 'r') as f:
+with open(args.database, 'r', encoding='utf-8') as f:
     DB = json.load(f)
 
 # Get profile
@@ -71,5 +70,5 @@ new[now] = req.json()
 DB.append(new)
 
 # Save DB
-with open(args.database, 'w') as f:
+with open(args.database, 'w', encoding='utf-8') as f:
     json.dump(DB, f, separators=(',', ':'), sort_keys=True)
