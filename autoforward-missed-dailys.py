@@ -28,6 +28,9 @@ parser.add_argument('-u', '--user-id',
 parser.add_argument('-k', '--api-token',
                     help='From https://habitica.com/#/options/settings/api\n \
                     default: environment variable HAB_API_TOKEN')
+parser.add_argument('-v', '--verbose',
+                    action='store_true', default=False,
+                    help='Verbose output')
 parser.add_argument('--baseurl',
                     type=str, default="https://habitica.com",
                     help='API server (default: https://habitica.com)')
@@ -67,6 +70,7 @@ if not tag:
     print(f"Auto-forward tag '{args.tag}' not found")
     sys.exit(1)
 tag_id = tag[0]['id']
+if args.verbose: print(f'tag: {tag[0]}')
 
 # Abort if you are resting at the inn
 req = requests.get(args.baseurl + "user", headers=headers)
@@ -82,8 +86,13 @@ yesterday = days[daynum - 1]
 
 req = requests.get(args.baseurl + "tasks/user?type=dailys", headers=headers)
 
-for daily in (x for x in req.json()['data'] if tag_id in x['tags']):
-    if daily['repeat'][yesterday] and daily['streak'] == 0:
-        daily['repeat'][today] = True
-        daily['text'] += f' {args.message}'
-        task = requests.put(args.baseurl + "tasks/" + daily['id'], headers=headers, data=json.dumps(daily))
+dailys_to_forward = [x for x in req.json()['data'] if tag_id in x['tags'] and x['repeat'][yesterday] and x['streak'] == 0 and not x['repeat'][today]]
+if not dailys_to_forward and args.verbose:
+    print("No dailys to forward")
+    sys.exit()
+
+for daily in dailys_to_forward:
+    if args.verbose: print(f"Forwarding daily \"{daily['text']}\"")
+    daily['repeat'][today] = True
+    daily['text'] += f' {args.message}'
+    task = requests.put(args.baseurl + "tasks/" + daily['id'], headers=headers, data=json.dumps(daily))
