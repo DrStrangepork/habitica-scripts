@@ -66,7 +66,7 @@ tag = [x for x in req.json()['data'] if x.get('name', None) == args.tag]
 if not tag:
     print(f"Auto-forward tag '{args.tag}' not found")
     sys.exit(1)
-tag_id = tag['id']
+tag_id = tag[0]['id']
 
 # Abort if you are resting at the inn
 req = requests.get(args.baseurl + "user", headers=headers)
