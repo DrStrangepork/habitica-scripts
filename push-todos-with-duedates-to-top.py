@@ -39,6 +39,9 @@ group.add_argument('-t', '--today',
 parser.add_argument('-f', '--future',
                     action='store_true', default=False,
                     help='include todos with future due dates')
+parser.add_argument('-v', '--verbose',
+                    action='store_true', default=False,
+                    help='show which todos are being moved')
 parser.add_argument('-u', '--user-id',
                     help='From https://habitica.com/#/options/settings/api\n \
                     default: environment variable HAB_API_USER')
@@ -88,6 +91,7 @@ for todo in [t for t in req.json()['data'] if ('date' in t and t['date'])]:
             or (args.today and todo['date'][:10] == today)
             or (not args.today and todo['date'][:10] <= today)):
         todos_with_duedates.append(todo)
+        if args.verbose: print(todo['text'])
 todos_with_duedates.sort(key=lambda k: (k['date'][:10], k['createdAt']), reverse=True)
 
 # Push todos_with_duedates to the top
