@@ -2,8 +2,9 @@
 
 import argparse
 import os
-import time
+import re
 import sys
+import time
 import requests
 import six
 
@@ -14,13 +15,27 @@ class Debug(argparse.Action):
         pdb.set_trace()
 
 
+def creds_check(id, tk):
+    try:
+        if args.user_id is None:
+            args.user_id = os.environ['HAB_API_USER']
+        creds_check(args.user_id)
+    except KeyError:
+        print("User ID/API Token must be set by the -u/--user-id option or by setting the environment variable 'HAB_API_USER'")
+        sys.exit(1)
+    if re.match(r'^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$', cred, re.IGNORECASE):
+        return True
+    else:
+        return False
+
+
 # MAIN
 parser = argparse.ArgumentParser(
     description="Moves active tasks with duedates to the top of the To-Dos list in order of duedate")
 group = parser.add_mutually_exclusive_group()
 group.add_argument('-t', '--today',
-                   action='store_true', default=False,
-                   help='send only today\'s todos to the top')
+                action='store_true', default=False,
+                help='send only today\'s todos to the top')
 parser.add_argument('-f', '--future',
                     action='store_true', default=False,
                     help='include todos with future due dates')
@@ -42,6 +57,9 @@ args.baseurl += "/api/v3/"
 try:
     if args.user_id is None:
         args.user_id = os.environ['HAB_API_USER']
+    if not re.match(r'^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$', args.user_id, re.IGNORECASE):
+        print(f"Invalid User ID: '{args.user_id}'")
+        sys.exit(1)
 except KeyError:
     print("User ID must be set by the -u/--user-id option or by setting the environment variable 'HAB_API_USER'")
     sys.exit(1)
@@ -49,6 +67,9 @@ except KeyError:
 try:
     if args.api_token is None:
         args.api_token = os.environ['HAB_API_TOKEN']
+    if not re.match(r'^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$', args.api_token, re.IGNORECASE):
+        print(f"Invalid API Token: '{args.api_token}'")
+        sys.exit(1)
 except KeyError:
     print("API Token must be set by the -k/--api-token option or by setting the environment variable 'HAB_API_TOKEN'")
     sys.exit(1)

@@ -2,6 +2,7 @@
 
 import argparse
 import os
+import re
 import sys
 import time
 import requests
@@ -72,12 +73,18 @@ args.baseurl += "/api/v3/"
 try:
     if args.user_id is None:
         args.user_id = os.environ['HAB_API_USER']
+    if not re.match(r'^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$', args.user_id, re.IGNORECASE):
+        print(f"Invalid User ID: '{args.user_id}'")
+        sys.exit(1)
 except KeyError:
     print("User ID must be set by the -u/--user-id option or by setting the environment variable 'HAB_API_USER'")
     sys.exit(1)
 try:
     if args.api_token is None:
         args.api_token = os.environ['HAB_API_TOKEN']
+    if not re.match(r'^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$', args.api_token, re.IGNORECASE):
+        print(f"Invalid API Token: '{args.api_token}'")
+        sys.exit(1)
 except KeyError:
     print("API Token must be set by the -k/--api-token option or by setting the environment variable 'HAB_API_TOKEN'")
     sys.exit(1)
