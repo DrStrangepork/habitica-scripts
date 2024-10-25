@@ -61,7 +61,7 @@ with open(args.database, 'r', encoding='utf-8') as f:
     DB = json.load(f)
 
 # Get profile
-req = requests.get(args.baseurl + "/export/userdata.json", headers=headers)
+req = requests.get(args.baseurl + "/export/userdata.json", headers=headers, timeout=10)
 
 # Add profile
 new = {}

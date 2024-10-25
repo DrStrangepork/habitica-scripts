@@ -56,7 +56,7 @@ except KeyError:
 
 headers = {"x-api-user": args.user_id, "x-api-key": args.api_token, "Content-Type": "application/json"}
 
-req = requests.get(args.baseurl + "user", headers=headers)
+req = requests.get(args.baseurl + "user", headers=headers, timeout=10)
 
 if req.json()['data']['stats']['class'] == "mage":
     if args.cast not in ("all", "both", "earth", "earthquake", "mpheal", "etherealsurge"):
@@ -64,34 +64,34 @@ if req.json()['data']['stats']['class'] == "mage":
         sys.exit(1)
     # Earthquake
     if args.cast in ("all", "both", "earth", "earthquake"):
-        skill = requests.post(args.baseurl + "user/class/cast/earth", headers=headers)
+        skill = requests.post(args.baseurl + "user/class/cast/earth", headers=headers, timeout=10)
     # Ethereal Surge
     if args.cast in ("all", "both", "mpheal", "etherealsurge"):
-        skill = requests.post(args.baseurl + "user/class/cast/mpheal", headers=headers)
+        skill = requests.post(args.baseurl + "user/class/cast/mpheal", headers=headers, timeout=10)
 elif req.json()['data']['stats']['class'] == "warrior":
     if args.cast not in ("all", "both", "intimidate", "intimidatinggaze", "presence", "valorousPresence"):
         print("Skill requested not available in character class")
         sys.exit(1)
     # Intimidating Gaze
     if args.cast in ("all", "both", "intimidate", "intimidatinggaze"):
-        skill = requests.post(args.baseurl + "user/class/cast/intimidate", headers=headers)
+        skill = requests.post(args.baseurl + "user/class/cast/intimidate", headers=headers, timeout=10)
     # Valorous Presence
     if args.cast in ("all", "both", "presence", "valorousPresence"):
-        skill = requests.post(args.baseurl + "user/class/cast/valorousPresence", headers=headers)
+        skill = requests.post(args.baseurl + "user/class/cast/valorousPresence", headers=headers, timeout=10)
 elif req.json()['data']['stats']['class'] == "rogue":
     if args.cast not in ("all", "both", "tools", "toolsOfTrade", "toolsofthetrade"):
         print("Skill requested not available in character class")
         sys.exit(1)
     # Tools of the Trade
     if args.cast in ("all", "both", "tools", "toolsOfTrade", "toolsofthetrade"):
-        skill = requests.post(args.baseurl + "user/class/cast/toolsOfTrade", headers=headers)
+        skill = requests.post(args.baseurl + "user/class/cast/toolsOfTrade", headers=headers, timeout=10)
 elif req.json()['data']['stats']['class'] == "healer":
     if args.cast not in ("all", "both", "protect", "protectAura", "protectiveaura", "blessing", "healAll"):
         print("Skill requested not available in character class")
         sys.exit(1)
     # Protective Aura
     if args.cast in ("all", "both", "protect", "protectAura", "protectiveaura"):
-        skill = requests.post(args.baseurl + "user/class/cast/protectAura", headers=headers)
+        skill = requests.post(args.baseurl + "user/class/cast/protectAura", headers=headers, timeout=10)
     # Blessing
     if args.cast in ("all", "both", "blessing", "healAll"):
-        skill = requests.post(args.baseurl + "user/class/cast/healAll", headers=headers)
+        skill = requests.post(args.baseurl + "user/class/cast/healAll", headers=headers, timeout=10)

@@ -55,8 +55,8 @@ headers = {"x-api-user": args.user_id, "x-api-key": args.api_token, "Content-Typ
 new_attr = {"attribute": args.attribute}
 
 # Get tasks
-req = requests.get(args.baseurl + "tasks/user", headers=headers)
+req = requests.get(args.baseurl + "tasks/user", headers=headers, timeout=10)
 
 # Update tasks
 for task in req.json()['data']:
-    update_req = requests.put(args.baseurl + "tasks/" + task['id'], headers=headers, data=json.dumps(new_attr))
+    update_req = requests.put(args.baseurl + "tasks/" + task['id'], headers=headers, timeout=10, data=json.dumps(new_attr))

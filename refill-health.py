@@ -54,9 +54,9 @@ except KeyError:
 
 headers = {"x-api-user": args.user_id, "x-api-key": args.api_token, "Content-Type": "application/json"}
 
-req = requests.get(args.baseurl, headers=headers)
+req = requests.get(args.baseurl, headers=headers, timeout=10)
 
 if req.json()['data']['stats']['hp'] < args.hp:
     data = {}
     data['stats.hp'] = req.json()['data']['stats']['hp'] * args.multiplier
-    stat = requests.put(args.baseurl, headers=headers, data=json.dumps(data))
+    stat = requests.put(args.baseurl, headers=headers, timeout=10, data=json.dumps(data))

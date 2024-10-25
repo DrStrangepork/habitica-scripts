@@ -56,7 +56,7 @@ except KeyError:
 headers = {"x-api-user": args.user_id, "x-api-key": args.api_token, "Content-Type": "application/json"}
 
 # Get auto-forward tag id
-req = requests.get(args.baseurl + "tags", headers=headers)
+req = requests.get(args.baseurl + "tags", headers=headers, timeout=10)
 tag = [x for x in req.json()['data'] if x.get('name', None) == args.tag]
 if not tag:
     print(f"Auto-forward tag '{args.tag}' not found")
@@ -65,7 +65,7 @@ tag_id = tag[0]['id']
 if args.verbose: print(f'tag: {tag[0]}')
 
 # Abort if you are resting at the inn
-req = requests.get(args.baseurl + "user", headers=headers)
+req = requests.get(args.baseurl + "user", headers=headers, timeout=10)
 if req.json()['data']['preferences']['sleep']:
     print("Resting in the Inn, auto-forwarding cancelled")
     sys.exit()
@@ -76,7 +76,7 @@ daynum = int(time.strftime("%w"))
 today = days[daynum]
 yesterday = days[daynum - 1]
 
-req = requests.get(args.baseurl + "tasks/user?type=dailys", headers=headers)
+req = requests.get(args.baseurl + "tasks/user?type=dailys", headers=headers, timeout=10)
 
 dailys_to_forward = [x for x in req.json()['data'] if tag_id in x['tags'] and x['repeat'][yesterday] and x['streak'] == 0 and not x['repeat'][today]]
 if not dailys_to_forward and args.verbose:
@@ -87,4 +87,4 @@ for daily in dailys_to_forward:
     if args.verbose: print(f"Forwarding daily \"{daily['text']}\"")
     daily['repeat'][today] = True
     daily['text'] += f' {args.message}'
-    task = requests.put(args.baseurl + "tasks/" + daily['id'], headers=headers, data=json.dumps(daily))
+    task = requests.put(args.baseurl + "tasks/" + daily['id'], headers=headers, timeout=10, data=json.dumps(daily))

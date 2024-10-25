@@ -64,12 +64,12 @@ schedule = [
     {"day": "29", "notes": "Crunches 90\nSit-ups 30\nSquats 95"}, {"day": "30", "notes": "Crunches 40\nSit-ups 40\nSquats 100"}
 ]
 
-req = requests.post(args.baseurl + "tasks/user", headers=headers, json={"attribute": "con", "priority": 1.5,
+req = requests.post(args.baseurl + "tasks/user", headers=headers, timeout=10, json={"attribute": "con", "priority": 1.5,
                     "startDate": time.strftime("%Y-%m-%d"), "text": "30-Day Ab/Squat Challenge", "type": "daily"})
 print(json.dumps({k: v for k, v in req.json().items() if k in ['id', 'text', 'type']}, sort_keys=True))
 
 for elem in sorted(schedule, key=itemgetter('day'), reverse=True):
-    req = requests.post(args.baseurl + "tasks/user", headers=headers, json={"attribute": "con",
+    req = requests.post(args.baseurl + "tasks/user", headers=headers, timeout=10, json={"attribute": "con",
                         "date": time.strftime("%Y-%m-%d", time.localtime(time.time() + 24 * 3600 * (int(elem['day']) - 1))),
                         "notes": elem['notes'], "text": "30-Day Ab/Squat Challenge Day " + elem['day'], "type": "todo"})
     print(json.dumps({k: v for k, v in req.json().items() if k in ['date', 'id', 'text', 'type']}, sort_keys=True))

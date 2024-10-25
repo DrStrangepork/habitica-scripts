@@ -27,7 +27,7 @@ def feed_pets(items, pets, food, url, headers):
     for pet in pets.keys():
         while items['food'][food] > 0:
             try:
-                feed_food = requests.post(f'{url}user/feed/{pet}/{food}', headers=headers)
+                feed_food = requests.post(f'{url}user/feed/{pet}/{food}', headers=headers, timeout=10)
                 feed_food.raise_for_status()
                 # If no errors, then food was consumed
                 items['food'][food] -= 1
@@ -84,7 +84,7 @@ except KeyError:
 
 headers = {"x-api-user": args.user_id, "x-api-key": args.api_token, "Content-Type": "application/json"}
 
-req = requests.get(args.baseurl + "user", headers=headers)
+req = requests.get(args.baseurl + "user", headers=headers, timeout=10)
 items = req.json()['data']['items']
 
 # for food in ["RottenMeat"]:

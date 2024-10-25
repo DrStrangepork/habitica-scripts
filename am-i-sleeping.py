@@ -47,7 +47,7 @@ except KeyError:
 
 headers = {"x-api-user": args.user_id, "x-api-key": args.api_token, "Content-Type": "application/json"}
 
-req = requests.get(args.baseurl + "user", headers=headers)
+req = requests.get(args.baseurl + "user", headers=headers, timeout=10)
 if req.json()['data']['preferences']['sleep']:
     if args.error_code:
         sys.exit(0)
