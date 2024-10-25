@@ -8,11 +8,6 @@ import sys
 import requests
 
 
-class Debug(argparse.Action):
-    def __call__(self, parser, namespace, values, option_string=None):
-        import pdb; pdb.set_trace()
-
-
 # MAIN
 parser = argparse.ArgumentParser(description="Set the training attribute on your tasks",
                                  epilog="For more info on attribute training, see http://habitica.wikia.com/wiki/Automatic_Allocation")
@@ -29,9 +24,6 @@ parser.add_argument('-k', '--api-token',
 parser.add_argument('--baseurl',
                     type=str, default="https://habitica.com",
                     help='API server (default: https://habitica.com)')
-parser.add_argument('--debug',
-                    action=Debug, nargs=0,
-                    help=argparse.SUPPRESS)
 if len(sys.argv) == 1:
     parser.print_help()
     sys.exit()

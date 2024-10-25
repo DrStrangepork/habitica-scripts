@@ -9,12 +9,6 @@ import requests
 import six
 
 
-class Debug(argparse.Action):
-    def __call__(self, parser, namespace, values, option_string=None):
-        import pdb
-        pdb.set_trace()
-
-
 def creds_check(id, tk):
     try:
         if args.user_id is None:
@@ -51,9 +45,6 @@ parser.add_argument('-k', '--api-token',
 parser.add_argument('--baseurl',
                     type=str, default="https://habitica.com",
                     help='API server (default: https://habitica.com)')
-parser.add_argument('--debug',
-                    action=Debug, nargs=0,
-                    help=argparse.SUPPRESS)
 args = parser.parse_args()
 args.baseurl += "/api/v3/"
 

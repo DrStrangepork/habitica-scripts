@@ -8,11 +8,6 @@ import time
 import requests
 
 
-class Debug(argparse.Action):
-    def __call__(self, parser, namespace, values, option_string=None):
-        import pdb; pdb.set_trace()
-
-
 def collect_pets(items, food_type):
     pets_to_feed = {}
     for name, value in items['pets'].items():
@@ -64,9 +59,6 @@ parser.add_argument('-k', '--api-token',
 parser.add_argument('--baseurl',
                     type=str, default="https://habitica.com",
                     help='API server (default: https://habitica.com)')
-parser.add_argument('--debug',
-                    action=Debug, nargs=0,
-                    help=argparse.SUPPRESS)
 args = parser.parse_args()
 args.baseurl += "/api/v3/"
 

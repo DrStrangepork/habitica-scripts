@@ -9,11 +9,6 @@ import time
 import requests
 
 
-class Debug(argparse.Action):
-    def __call__(self, parser, namespace, values, option_string=None):
-        import pdb; pdb.set_trace()
-
-
 # MAIN
 parser = argparse.ArgumentParser(description="Add missed dailys to the current day's dailys")
 parser.add_argument('-t', '--tag',
@@ -34,9 +29,6 @@ parser.add_argument('-v', '--verbose',
 parser.add_argument('--baseurl',
                     type=str, default="https://habitica.com",
                     help='API server (default: https://habitica.com)')
-parser.add_argument('--debug',
-                    action=Debug, nargs=0,
-                    help=argparse.SUPPRESS)
 args = parser.parse_args()
 args.baseurl += "/api/v3/"
 

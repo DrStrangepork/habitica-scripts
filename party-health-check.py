@@ -8,11 +8,6 @@ import requests
 from six.moves import range
 
 
-class Debug(argparse.Action):
-    def __call__(self, parser, namespace, values, option_string=None):
-        import pdb; pdb.set_trace()
-
-
 # MAIN
 parser = argparse.ArgumentParser(description="Checks the health of all party members and casts Blessing until all members are above a given threshold")
 parser.add_argument('-p', '--hp', '--hitpoints', metavar='[1..49]',
@@ -33,9 +28,6 @@ parser.add_argument('-k', '--api-token',
 parser.add_argument('--baseurl',
                     type=str, default="https://habitica.com",
                     help='API server (default: https://habitica.com)')
-parser.add_argument('--debug',
-                    action=Debug, nargs=0,
-                    help=argparse.SUPPRESS)
 args = parser.parse_args()
 args.baseurl += "/api/v3/"
 
