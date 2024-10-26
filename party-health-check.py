@@ -5,7 +5,6 @@ import os
 import re
 import sys
 import requests
-from six.moves import range
 
 
 # MAIN
@@ -54,6 +53,9 @@ except KeyError:
 headers = {"x-api-user": args.user_id, "x-api-key": args.api_token, "Content-Type": "application/json"}
 
 req = requests.get(args.baseurl + "groups/party/members", headers=headers, timeout=10)
+if req.reason == 'Not Found':
+    print("You are not in a party")
+    sys.exit(0)
 
 for member in req.json()['data']:
     mem_req = requests.get(args.baseurl + "members/" + member['id'], headers=headers, timeout=10)

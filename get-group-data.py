@@ -52,5 +52,9 @@ except KeyError:
 headers = {"x-api-user": args.user_id, "x-api-key": args.api_token, "Content-Type": "application/json"}
 
 req = requests.get(args.baseurl + args.group_id, headers=headers, timeout=10)
+if req.reason == 'Not Found':
+    print(f"You are not in group '{args.group_id}'")
+    sys.exit(0)
+
 # with open(args.outfile, 'w') as f:
 json.dump(req.json(), args.outfile, separators=(',', ':'), sort_keys=True)

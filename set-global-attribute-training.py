@@ -56,6 +56,9 @@ new_attr = {"attribute": args.attribute}
 
 # Get tasks
 req = requests.get(args.baseurl + "tasks/user", headers=headers, timeout=10)
+if req.reason == 'Not Found':
+    print("You have no Tasks")
+    sys.exit(0)
 
 # Update tasks
 for task in req.json()['data']:

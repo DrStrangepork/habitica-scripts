@@ -62,6 +62,9 @@ today = six.text_type(time.strftime("%Y-%m-%d"))
 todos_with_duedates = []
 
 req = requests.get(args.baseurl + "tasks/user?type=todos", headers=headers, timeout=10)
+if req.reason == 'Not Found':
+    print("You have no To-Dos")
+    sys.exit(0)
 
 for todo in [t for t in req.json()['data'] if ('date' in t and t['date'])]:
     if ((args.future and todo['date'][:10] > today)     # pylint: disable=too-many-boolean-expressions

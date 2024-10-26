@@ -57,6 +57,9 @@ headers = {"x-api-user": args.user_id, "x-api-key": args.api_token, "Content-Typ
 
 # Get auto-forward tag id
 req = requests.get(args.baseurl + "tags", headers=headers, timeout=10)
+if req.reason == 'Not Found':
+    print("You have no tags")
+    sys.exit(0)
 tag = [x for x in req.json()['data'] if x.get('name', None) == args.tag]
 if not tag:
     print(f"Auto-forward tag '{args.tag}' not found")
@@ -77,6 +80,9 @@ today = days[daynum]
 yesterday = days[daynum - 1]
 
 req = requests.get(args.baseurl + "tasks/user?type=dailys", headers=headers, timeout=10)
+if req.reason == 'Not Found':
+    print("You have no Dailys")
+    sys.exit(0)
 
 dailys_to_forward = [x for x in req.json()['data'] if tag_id in x['tags'] and x['repeat'][yesterday] and x['streak'] == 0 and not x['repeat'][today]]
 if not dailys_to_forward and args.verbose:

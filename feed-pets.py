@@ -40,11 +40,11 @@ def feed_pets(items, pets, food, url, headers):
                     items['mounts'][pet] = True
                     break
             except requests.exceptions.RequestException:
-                if 'TooManyRequests' in feed_food.json():
+                if 'TooManyRequests' in feed_food.json(): # type: ignore
                     print('Sleeping for 60s due to rate limiting restrictions')
                     time.sleep(60)
                 else:
-                    print(feed_food.json())
+                    print(feed_food.json()) # type: ignore
                     sys.exit(1)
 
 
@@ -86,6 +86,12 @@ headers = {"x-api-user": args.user_id, "x-api-key": args.api_token, "Content-Typ
 
 req = requests.get(args.baseurl + "user", headers=headers, timeout=10)
 items = req.json()['data']['items']
+if not items['food']:
+    print("You have no food")
+    sys.exit(0)
+elif not items['pets']:
+    print("You have no pets")
+    sys.exit(0)
 
 # for food in ["RottenMeat"]:
 for food in items['food']:
