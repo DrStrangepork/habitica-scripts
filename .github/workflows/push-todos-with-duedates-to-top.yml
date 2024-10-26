@@ -1,4 +1,4 @@
-name: push-todos-with-duedates-to-top
+name: Push Todos With Duedates To Top
 
 on:
   workflow_dispatch:
