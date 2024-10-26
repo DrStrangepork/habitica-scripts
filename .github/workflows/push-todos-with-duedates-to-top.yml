@@ -24,6 +24,6 @@ jobs:
 
       - name: Run script
         env:
-          USER: ${{ secrets.HAB_API_USER }}
-          TOKEN: ${{ secrets.HAB_API_TOKEN }}
+          HAB_API_USER: ${{ secrets.HAB_API_USER }}
+          HAB_API_TOKEN: ${{ secrets.HAB_API_TOKEN }}
         run: python push-todos-with-duedates-to-top.py
