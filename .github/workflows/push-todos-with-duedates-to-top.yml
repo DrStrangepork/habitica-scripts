@@ -26,4 +26,4 @@ jobs:
         env:
           HAB_API_USER: ${{ secrets.HAB_API_USER }}
           HAB_API_TOKEN: ${{ secrets.HAB_API_TOKEN }}
-        run: python push-todos-with-duedates-to-top.py
+        run: python push-todos-with-duedates-to-top.py -v
