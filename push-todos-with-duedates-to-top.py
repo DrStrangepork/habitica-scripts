@@ -5,11 +5,21 @@ import os
 import re
 import sys
 import time
+from datetime import datetime, timezone
+
 import requests
 import six
 
 
+def convert_to_local_time(utc_time_str):
+    utc_time = datetime.strptime(utc_time_str, "%Y-%m-%dT%H:%M:%S.%fZ")
+    utc_time = utc_time.replace(tzinfo=timezone.utc)
+    local_time = utc_time.astimezone(local_tz)
+    return local_time.strftime("%Y-%m-%d")
+
+
 # MAIN
+local_tz = datetime.now().astimezone().tzinfo  # Auto-detect local timezone
 parser = argparse.ArgumentParser(
     description="Moves active tasks with duedates to the top of the To-Dos list in order of duedate")
 group = parser.add_mutually_exclusive_group()
@@ -67,12 +77,13 @@ if req.reason == 'Not Found':
     sys.exit(0)
 
 for todo in [t for t in req.json()['data'] if ('date' in t and t['date'])]:
-    if ((args.future and todo['date'][:10] > today)     # pylint: disable=too-many-boolean-expressions
-            or (args.today and todo['date'][:10] == today)
-            or (not args.today and todo['date'][:10] <= today)):
+    todo['local_date'] = convert_to_local_time(todo['date'])
+    if ((args.future and todo['local_date'] > today)     # pylint: disable=too-many-boolean-expressions
+            or (args.today and todo['local_date'] == today)
+            or (not args.today and todo['local_date'] <= today)):
         todos_with_duedates.append(todo)
         if args.verbose: print(todo['text'])
-todos_with_duedates.sort(key=lambda k: (k['date'][:10], k['createdAt']), reverse=True)
+todos_with_duedates.sort(key=lambda k: (k['local_date'], k['value']), reverse=True)
 
 # Push todos_with_duedates to the top
 for todo in todos_with_duedates:

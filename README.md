@@ -38,7 +38,7 @@ Miscellaneous scripts for [Habitica](http://habitica.com)
 - party-health-check.py
   - Checks the health of all party members and casts Blessing until all members are above a given threshold (default 30hp)
 - push-todos-with-duedates-to-top.py
-  - Moves active tasks with duedates to the top of the To-Dos list in order of duedate
+  - Moves active tasks with duedates to the top of the To-Dos list in order of duedate, then task value (the more red, the higher the order in the list)
 - refill-health.py
   - Increases health points if less than given threshold
 - refill-mana.py
