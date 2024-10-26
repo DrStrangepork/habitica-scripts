@@ -1,6 +1,7 @@
 name: push-todos-with-duedates-to-top
 
 on:
+  workflow_dispatch:
   schedule:
     - cron: '00 10 * * *'  # Runs every day at 10:00 UTC
 
