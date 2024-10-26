@@ -8,11 +8,6 @@ import time
 import requests
 
 
-class Debug(argparse.Action):
-    def __call__(self, parser, namespace, values, option_string=None):
-        import pdb; pdb.set_trace()
-
-
 def collect_pets(items, food_type):
     pets_to_feed = {}
     for name, value in items['pets'].items():
@@ -32,7 +27,7 @@ def feed_pets(items, pets, food, url, headers):
     for pet in pets.keys():
         while items['food'][food] > 0:
             try:
-                feed_food = requests.post(f'{url}user/feed/{pet}/{food}', headers=headers)
+                feed_food = requests.post(f'{url}user/feed/{pet}/{food}', headers=headers, timeout=10)
                 feed_food.raise_for_status()
                 # If no errors, then food was consumed
                 items['food'][food] -= 1
@@ -64,9 +59,6 @@ parser.add_argument('-k', '--api-token',
 parser.add_argument('--baseurl',
                     type=str, default="https://habitica.com",
                     help='API server (default: https://habitica.com)')
-parser.add_argument('--debug',
-                    action=Debug, nargs=0,
-                    help=argparse.SUPPRESS)
 args = parser.parse_args()
 args.baseurl += "/api/v3/"
 
@@ -92,7 +84,7 @@ except KeyError:
 
 headers = {"x-api-user": args.user_id, "x-api-key": args.api_token, "Content-Type": "application/json"}
 
-req = requests.get(args.baseurl + "user", headers=headers)
+req = requests.get(args.baseurl + "user", headers=headers, timeout=10)
 items = req.json()['data']['items']
 
 # for food in ["RottenMeat"]:

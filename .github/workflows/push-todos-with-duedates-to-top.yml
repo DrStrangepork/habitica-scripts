@@ -1,0 +1,28 @@
+name: Run Python Script Daily
+
+on:
+  schedule:
+    - cron: '50 3 * * *'  # Runs every day at midnight UTC
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install -q --upgrade pip
+          pip install -q requests
+
+      - name: Run script
+        env:
+          USER: ${{ secrets.USER }}
+          TOKEN: ${{ secrets.TOKEN }}
+        run: python push-todos-with-duedates-to-top.py

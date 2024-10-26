@@ -9,28 +9,6 @@ import requests
 import six
 
 
-class Debug(argparse.Action):
-    def __call__(self, parser, namespace, values, option_string=None):
-        import pdb
-        pdb.set_trace()
-
-
-def creds_check(id, tk):
-    try:
-        if args.user_id is None:
-            args.user_id = os.environ['HAB_API_USER']
-        creds_check(args.user_id)
-    except KeyError:
-        print("User ID/API Token must be set by the -u/--user-id option or by setting the environment variable 'HAB_API_USER'")
-        sys.exit(1)
-    # HAB_API_TOKEN=96a91c37-c643-4800-991d-4b4f8447a47c
-    # HAB_API_USER=30983c37-52c3-415d-977c-38af6c7db91c
-    if re.match(r'^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$', cred, re.IGNORECASE):
-        return True
-    else:
-        return False
-
-
 # MAIN
 parser = argparse.ArgumentParser(
     description="Moves active tasks with duedates to the top of the To-Dos list in order of duedate")
@@ -41,6 +19,9 @@ group.add_argument('-t', '--today',
 parser.add_argument('-f', '--future',
                     action='store_true', default=False,
                     help='include todos with future due dates')
+parser.add_argument('-v', '--verbose',
+                    action='store_true', default=False,
+                    help='show which todos are being moved')
 parser.add_argument('-u', '--user-id',
                     help='From https://habitica.com/#/options/settings/api\n \
                     default: environment variable HAB_API_USER')
@@ -50,9 +31,6 @@ parser.add_argument('-k', '--api-token',
 parser.add_argument('--baseurl',
                     type=str, default="https://habitica.com",
                     help='API server (default: https://habitica.com)')
-parser.add_argument('--debug',
-                    action=Debug, nargs=0,
-                    help=argparse.SUPPRESS)
 args = parser.parse_args()
 args.baseurl += "/api/v3/"
 
@@ -83,16 +61,16 @@ headers = {"x-api-user": args.user_id, "x-api-key": args.api_token,
 today = six.text_type(time.strftime("%Y-%m-%d"))
 todos_with_duedates = []
 
-req = requests.get(args.baseurl + "tasks/user?type=todos", headers=headers)
+req = requests.get(args.baseurl + "tasks/user?type=todos", headers=headers, timeout=10)
 
 for todo in [t for t in req.json()['data'] if ('date' in t and t['date'])]:
-    if ((args.future and todo['date'][:10] > today)
+    if ((args.future and todo['date'][:10] > today)     # pylint: disable=too-many-boolean-expressions
             or (args.today and todo['date'][:10] == today)
             or (not args.today and todo['date'][:10] <= today)):
         todos_with_duedates.append(todo)
+        if args.verbose: print(todo['text'])
 todos_with_duedates.sort(key=lambda k: (k['date'][:10], k['createdAt']), reverse=True)
 
 # Push todos_with_duedates to the top
 for todo in todos_with_duedates:
-    requests.post(args.baseurl + "tasks/"
-                  + todo['id'] + "/move/to/0", headers=headers)
+    requests.post(args.baseurl + f"tasks/{todo['id']}/move/to/0", headers=headers, timeout=10)

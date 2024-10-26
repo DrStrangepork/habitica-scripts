@@ -10,11 +10,6 @@ from operator import itemgetter
 import requests
 
 
-class Debug(argparse.Action):
-    def __call__(self, parser, namespace, values, option_string=None):
-        import pdb; pdb.set_trace()
-
-
 # MAIN
 parser = argparse.ArgumentParser(description="A 30-day escalating ab/squat exercise routine")
 parser.add_argument('-u', '--user-id',
@@ -26,9 +21,6 @@ parser.add_argument('-k', '--api-token',
 parser.add_argument('--baseurl',
                     type=str, default="https://habitica.com",
                     help='API server (default: https://habitica.com)')
-parser.add_argument('--debug',
-                    action=Debug, nargs=0,
-                    help=argparse.SUPPRESS)
 args = parser.parse_args()
 args.baseurl += "/api/v3/"
 
@@ -72,12 +64,12 @@ schedule = [
     {"day": "29", "notes": "Crunches 90\nSit-ups 30\nSquats 95"}, {"day": "30", "notes": "Crunches 40\nSit-ups 40\nSquats 100"}
 ]
 
-req = requests.post(args.baseurl + "tasks/user", headers=headers, json={"attribute": "con", "priority": 1.5,
+req = requests.post(args.baseurl + "tasks/user", headers=headers, timeout=10, json={"attribute": "con", "priority": 1.5,
                     "startDate": time.strftime("%Y-%m-%d"), "text": "30-Day Ab/Squat Challenge", "type": "daily"})
 print(json.dumps({k: v for k, v in req.json().items() if k in ['id', 'text', 'type']}, sort_keys=True))
 
 for elem in sorted(schedule, key=itemgetter('day'), reverse=True):
-    req = requests.post(args.baseurl + "tasks/user", headers=headers, json={"attribute": "con",
+    req = requests.post(args.baseurl + "tasks/user", headers=headers, timeout=10, json={"attribute": "con",
                         "date": time.strftime("%Y-%m-%d", time.localtime(time.time() + 24 * 3600 * (int(elem['day']) - 1))),
                         "notes": elem['notes'], "text": "30-Day Ab/Squat Challenge Day " + elem['day'], "type": "todo"})
     print(json.dumps({k: v for k, v in req.json().items() if k in ['date', 'id', 'text', 'type']}, sort_keys=True))

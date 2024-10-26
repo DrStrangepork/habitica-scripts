@@ -8,11 +8,6 @@ import requests
 from six.moves import range
 
 
-class Debug(argparse.Action):
-    def __call__(self, parser, namespace, values, option_string=None):
-        import pdb; pdb.set_trace()
-
-
 # MAIN
 parser = argparse.ArgumentParser(description="Checks the health of all party members and casts Blessing until all members are above a given threshold")
 parser.add_argument('-p', '--hp', '--hitpoints', metavar='[1..49]',
@@ -33,9 +28,6 @@ parser.add_argument('-k', '--api-token',
 parser.add_argument('--baseurl',
                     type=str, default="https://habitica.com",
                     help='API server (default: https://habitica.com)')
-parser.add_argument('--debug',
-                    action=Debug, nargs=0,
-                    help=argparse.SUPPRESS)
 args = parser.parse_args()
 args.baseurl += "/api/v3/"
 
@@ -61,10 +53,10 @@ except KeyError:
 
 headers = {"x-api-user": args.user_id, "x-api-key": args.api_token, "Content-Type": "application/json"}
 
-req = requests.get(args.baseurl + "groups/party/members", headers=headers)
+req = requests.get(args.baseurl + "groups/party/members", headers=headers, timeout=10)
 
 for member in req.json()['data']:
-    mem_req = requests.get(args.baseurl + "members/" + member['id'], headers=headers)
+    mem_req = requests.get(args.baseurl + "members/" + member['id'], headers=headers, timeout=10)
     if args.verbose or (not args.quiet and mem_req.json()['data']['stats']['hp'] < args.hp):
         try:
             print(f"{member['profile']['name']}: {mem_req.json()['data']['stats']['hp']}")
@@ -72,6 +64,6 @@ for member in req.json()['data']:
             print(f"{member['id']}: {mem_req.json()['data']['stats']['hp']}")
     while mem_req.json()['data']['stats']['hp'] < args.hp:
         os.system("cast-party-spells.py -c blessing -u " + args.user_id + " -k " + args.api_token)
-        mem_req = requests.get(args.baseurl + "members/" + member['id'], headers=headers)
+        mem_req = requests.get(args.baseurl + "members/" + member['id'], headers=headers, timeout=10)
         if not args.quiet:
             print(f"{member['profile']['name']}: {mem_req.json()['data']['stats']['hp']}")

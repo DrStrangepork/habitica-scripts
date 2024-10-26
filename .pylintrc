@@ -1,0 +1,56 @@
+[BASIC]
+; # Naming style matching correct class constant names.
+; class-const-naming-style=UPPER_CASE
+; # Naming style matching correct class names.
+; class-naming-style=PascalCase
+; # Naming style matching correct constant names.
+; const-naming-style=UPPER_CASE
+# Naming style matching correct function names.
+function-naming-style=any
+; # Include a hint for the correct naming format with invalid-name.
+; include-naming-hint=no
+; # Naming style matching correct method names.
+; method-naming-style=snake_case
+# Naming style matching correct module names.
+module-naming-style=any
+; # Regular expression which should only match function or class names that do
+; # not require a docstring.
+; no-docstring-rgx=^_
+; # Naming style matching correct variable names.
+; variable-naming-style=snake_case
+
+; # Regular expression matching correct variable names. Overrides variable-
+; # naming-style. If left empty, variable names will be checked with the set
+; # naming style.
+; #variable-rgx=
+
+; # Good variable names which should always be accepted, separated by a comma.
+; # Default: ('i', 'j', 'k', 'ex', 'Run', '_')
+; good-names=i,j,k,v,ex,Run,_
+
+; [FORMAT]
+; ; # Regexp for a line that is allowed to be longer than the limit.
+; ; ignore-long-lines=^\s*(# )?<?https?://\S+>?$
+; # Number of spaces of indent required inside a hanging or continued line.
+; indent-after-paren=4
+; # String used as indentation unit. This is usually " " (4 spaces) or "\t" (1
+; # tab).
+; indent-string='     '
+
+[MESSAGES CONTROL]
+# Debugging
+# C0415 = import-outside-toplevel
+# W1515 = forgotten-debug-statement
+
+# Pointless whinging
+# C0301 = Line too long
+# C0302 = too-many-lines
+# C0321 = multiple-statements
+# W0621 = redefined-outer-name
+
+# Sometimes disabled depending on how bad a module is
+# C0112 = empty-docstring
+# C0114 = missing-module-docstring
+# C0115 = missing-class-docstring
+# C0116 = missing-function-docstring
+disable=C0112,C0114,C0115,C0116,C0301,C0302,C0321,C0415,W0621,W1515

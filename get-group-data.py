@@ -8,11 +8,6 @@ import sys
 import requests
 
 
-class Debug(argparse.Action):
-    def __call__(self, parser, namespace, values, option_string=None):
-        import pdb; pdb.set_trace()
-
-
 # MAIN
 parser = argparse.ArgumentParser(description="Dumps group data to a file group-data.json in the current directory")
 parser.add_argument('-g', '--group-id',
@@ -30,9 +25,6 @@ parser.add_argument('-k', '--api-token',
 parser.add_argument('--baseurl',
                     type=str, default="https://habitica.com",
                     help='API server (default: https://habitica.com)')
-parser.add_argument('--debug',
-                    action=Debug, nargs=0,
-                    help=argparse.SUPPRESS)
 args = parser.parse_args()
 args.baseurl += "/api/v3/groups/"
 
@@ -59,6 +51,6 @@ except KeyError:
 
 headers = {"x-api-user": args.user_id, "x-api-key": args.api_token, "Content-Type": "application/json"}
 
-req = requests.get(args.baseurl + args.group_id, headers=headers)
+req = requests.get(args.baseurl + args.group_id, headers=headers, timeout=10)
 # with open(args.outfile, 'w') as f:
 json.dump(req.json(), args.outfile, separators=(',', ':'), sort_keys=True)
