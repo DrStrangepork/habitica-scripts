@@ -82,9 +82,9 @@ for todo in [t for t in req.json()['data'] if ('date' in t and t['date'])]:
             or (args.today and todo['local_date'] == today)
             or (not args.today and todo['local_date'] <= today)):
         todos_with_duedates.append(todo)
-        if args.verbose: print(todo['text'])
 todos_with_duedates.sort(key=lambda k: (k['local_date'], k['value']), reverse=True)
 
 # Push todos_with_duedates to the top
 for todo in todos_with_duedates:
+    if args.verbose: print(f"{todo['text']}: {todo['local_date']}, value: {todo['value']}")
     requests.post(args.baseurl + f"tasks/{todo['id']}/move/to/0", headers=headers, timeout=10)
